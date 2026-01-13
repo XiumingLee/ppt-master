@@ -94,13 +94,13 @@ high quality, 4K resolution, clean and professional,
 
 根据画布格式确定图片宽高比：
 
-| 画布格式 | 背景图宽高比 | 建议分辨率 |
-|----------|--------------|------------|
-| PPT 16:9 | 16:9 | 1920×1080 或 2560×1440 |
-| PPT 4:3 | 4:3 | 1600×1200 |
-| 小红书 | 3:4 | 1242×1660 |
-| 朋友圈 | 1:1 | 1080×1080 |
-| Story | 9:16 | 1080×1920 |
+| 画布格式 | 背景图宽高比 | 建议分辨率（通义万象 V2） |
+|----------|--------------|---------------------------|
+| PPT 16:9 | 16:9 | 1280×720 或 1696×960 |
+| PPT 4:3 | 4:3 | 1472×1104 |
+| 小红书 | 3:4 | 1104×1472 |
+| 朋友圈 | 1:1 | 1280×1280 或 1024×1024 |
+| Story | 9:16 | 720×1280 或 960×1696 |
 
 ---
 
@@ -120,7 +120,7 @@ high quality, 4K resolution, clean and professional,
 Abstract geometric background with soft gradient, 
 minimalist style, deep blue to purple gradient,
 subtle patterns, clean negative space in center for text overlay,
-16:9 aspect ratio, high resolution, professional presentation background
+high resolution, professional presentation background
 --no text, watermark, busy patterns, faces
 ```
 
@@ -176,22 +176,28 @@ clean white background, professional business illustration
 
 > ⚠️ **前置条件**: 必须先完成 4.2，确保 `images/image_prompts.md` 已创建
 
-**方式一：自动生成**（如果 AI 工具支持）
-- 直接调用图像生成 API
-- 下载并保存到 `项目/images/` 目录
+**方式一：使用本项目工具自动生成**（推荐）
+- 使用阿里云百炼 API 自动生成图片
+- 命令示例：
+  ```bash
 
-**方式二：手动生成**（常用方式）
+  # 生成图片
+  python3 tools/text_to_image_bailian.py "现代科技感抽象背景，深蓝渐变" -s "1280*720" -o projects/项目名/images/cover_bg.png
+  ```
+- 支持的尺寸：
+  - `1280*1280` (1:1 方形，推荐)
+  - `1024*1024` (1:1 方形)
+  - `1280*720` (16:9 横版，适合 PPT)
+  - `1696*960` (16:9 横版，高分辨率)
+  - `720*1280` (9:16 竖版，适合 Story)
+  - `960*1696` (9:16 竖版，高分辨率)
+  - `1104*1472` (3:4 竖版，适合小红书)
+  - `1472*1104` (4:3 横版，适合 PPT 4:3)
+
+**方式二：手动生成**（备选方式）
 - 提示词已保存在 `images/image_prompts.md`，告知用户文件位置
 - 用户自行到 AI 平台（Midjourney、DALL-E、Stable Diffusion、文心一格、通义万相）生成
 - 用户将生成的图片放入 `项目/images/` 目录
-
-**方式三：使用 Gemini 生成**（推荐高分辨率）
-- 在 [Gemini](https://gemini.google.com/) 中生成图片
-- 选择 **Download full size** 下载高分辨率版本
-- ⚠️ **水印处理**: Gemini 生成的图片右下角有星星水印，使用以下工具去除：
-  - 本项目工具: `python3 tools/gemini_watermark_remover.py <图片路径>`
-  - 或使用 [gemini-watermark-remover](https://github.com/journey-ad/gemini-watermark-remover)
-- 将处理后的图片放入 `项目/images/` 目录
 
 ### 4.4 验证阶段
 
@@ -211,19 +217,24 @@ clean white background, professional business illustration
 ### 图片 1: cover_bg.png
 
 **用途**: 封面背景
-**尺寸**: 1920×1080 (16:9)
+**尺寸**: 1280×720 (16:9)
 **原始描述**: 现代科技感抽象背景，深蓝渐变
 
 **优化提示词**:
-```
+`
 Abstract futuristic background with flowing digital waves and particles,
 modern tech aesthetic, deep navy blue (#1E3A5F) to bright cyan (#22D3EE) gradient,
 soft glowing light effects, geometric patterns,
-wide 16:9 composition with clear center area for text,
-high quality 4K, professional presentation background,
+clear center area for text overlay,
+high quality, professional presentation background,
 clean and sophisticated
 --no text, watermark, faces, realistic photos, busy details
-```
+`
+
+**生成命令**:
+`bash
+python3 tools/text_to_image_bailian.py "Abstract futuristic background with flowing digital waves and particles, modern tech aesthetic, deep navy blue to bright cyan gradient, soft glowing light effects, geometric patterns, clear center area for text overlay, high quality, professional presentation background, clean and sophisticated" -s "1280*720" -o projects/项目名/images/cover_bg.png
+`
 
 **图片描述** (alt 文本):
 > 现代科技感抽象背景，深蓝色渐变配合数字波浪和粒子效果
@@ -240,8 +251,10 @@ clean and sophisticated
 
 | 文件名 | 尺寸 | 状态 |
 |--------|------|------|
-| cover_bg.png | 1920×1080 | ✅ 已生成 |
-| product.png | 600×400 | ✅ 已生成 |
+| cover_bg.png | 1280×720 | ✅ 已生成 |
+| product.png | 1280×1280 | ✅ 已生成 |
+
+**使用的工具**: 阿里云百炼通义万象 V2 (wan2.6-t2i)
 
 **下一步**: 请调用 Executor 角色开始生成 SVG。
 ```

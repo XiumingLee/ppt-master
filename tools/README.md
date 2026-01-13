@@ -133,7 +133,78 @@ Node.js:
 
 ---
 
-### 0.6. rotate_images.py — 图片方向修正工具
+### 0.6. text_to_image_bailian.py — 文本转图片工具（阿里云百炼）
+
+使用阿里云百炼 API 根据文本描述生成图片，支持多种尺寸规格。
+
+**功能**:
+
+- 调用阿里云百炼文本生成图片 API
+- 支持多种尺寸: 1024×1024 (1:1)、1280×720 (16:9)、720×1280 (9:16)
+- 自动下载并保存图片到指定目录
+- 支持环境变量配置 API Key
+
+**用法**:
+
+```bash
+# 生成方形图片 (1024×1024)
+python3 tools/text_to_image_bailian.py "现代科技感抽象背景，深蓝渐变" -o images/bg.png
+
+# 生成 16:9 横版图片 (1280×720)
+python3 tools/text_to_image_bailian.py "团队协作场景插图" -s "1280*720" -o images/team.png
+
+# 生成 9:16 竖版图片 (720×1280)
+python3 tools/text_to_image_bailian.py "产品展示图" -s "720*1280" -o images/product.png
+
+# 静默模式
+python3 tools/text_to_image_bailian.py "背景图" -o images/bg.png -q
+```
+
+**支持的尺寸**:
+
+| 尺寸 | 宽高比 | 适用场景 |
+|------|--------|----------|
+| 1280*1280 | 1:1 | 方形图片、朋友圈、小红书封面（推荐） |
+| 1024*1024 | 1:1 | 方形图片 |
+| 1280*720 | 16:9 | PPT 背景、横版配图 |
+| 1696*960 | 16:9 | PPT 背景、横版配图（高分辨率） |
+| 720*1280 | 9:16 | Story、竖版海报 |
+| 960*1696 | 9:16 | Story、竖版海报（高分辨率） |
+| 1104*1472 | 3:4 | 小红书竖版 |
+| 1472*1104 | 4:3 | PPT 4:3 背景 |
+
+**环境变量配置**:
+
+Windows (CMD):
+```cmd
+set BAILIAN_KEY=your_api_key_here
+```
+
+Windows (PowerShell):
+```powershell
+$env:BAILIAN_KEY="your_api_key_here"
+```
+
+Linux/Mac:
+```bash
+export BAILIAN_KEY='your_api_key_here'
+```
+
+**依赖**:
+
+```bash
+pip install dashscope
+```
+
+**获取 API Key**:
+
+1. 访问 [阿里云百炼控制台](https://bailian.console.aliyun.com/)
+2. 开通文本生成图片服务
+3. 获取 API Key 并设置为环境变量 `BAILIAN_KEY`
+
+---
+
+### 0.7. rotate_images.py — 图片方向修正工具
 
 处理从网页下载的图片 EXIF 方向信息丢失或错误的专用工具。
 
