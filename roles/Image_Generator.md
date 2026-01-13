@@ -182,7 +182,7 @@ clean white background, professional business illustration
   ```bash
 
   # 生成图片
-  python3 tools/text_to_image_bailian.py "现代科技感抽象背景，深蓝渐变" -s "1280*720" -o projects/项目名/images/cover_bg.png
+  PYTHONIOENCODING=utf-8 python tools/text_to_image_bailian.py "现代科技感抽象背景，深蓝渐变" -s "1280*720" -o projects/项目名/images/cover_bg.png
   ```
 - 支持的尺寸：
   - `1280*1280` (1:1 方形，推荐)
@@ -233,7 +233,7 @@ clean and sophisticated
 
 **生成命令**:
 `bash
-python3 tools/text_to_image_bailian.py "Abstract futuristic background with flowing digital waves and particles, modern tech aesthetic, deep navy blue to bright cyan gradient, soft glowing light effects, geometric patterns, clear center area for text overlay, high quality, professional presentation background, clean and sophisticated" -s "1280*720" -o projects/项目名/images/cover_bg.png
+PYTHONIOENCODING=utf-8 python tools/text_to_image_bailian.py "Abstract futuristic background with flowing digital waves and particles, modern tech aesthetic, deep navy blue to bright cyan gradient, soft glowing light effects, geometric patterns, clear center area for text overlay, high quality, professional presentation background, clean and sophisticated" -s "1280*720" -o projects/项目名/images/cover_bg.png
 `
 
 **图片描述** (alt 文本):
