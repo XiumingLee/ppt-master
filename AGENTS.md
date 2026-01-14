@@ -1,6 +1,6 @@
 # AGENTS.md
 
-本文件为 AI 代理协作指引。详细文档请参阅 [README.md](./README.md)。
+本文件为 AI 代理协作指引。
 
 ## 项目概述
 
