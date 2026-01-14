@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="1280" height="720" fill="#1E3A5F"/>
+
+  <!-- 科技感装饰 - 左上代码元素 -->
+  <g opacity="0.1">
+    <text x="60" y="80" font-family="Consolas, monospace" font-size="14" fill="#22D3EE">&lt;coding&gt;</text>
+    <text x="60" y="100" font-family="Consolas, monospace" font-size="14" fill="#22D3EE">  const ai = new AI();</text>
+    <text x="60" y="120" font-family="Consolas, monospace" font-size="14" fill="#22D3EE">  ai.generate(app);</text>
+    <text x="60" y="140" font-family="Consolas, monospace" font-size="14" fill="#22D3EE">&lt;/coding&gt;</text>
+  </g>
+
+  <!-- 科技感装饰 - 右下代码元素 -->
+  <g opacity="0.1">
+    <text x="950" y="580" font-family="Consolas, monospace" font-size="14" fill="#22D3EE">npm install ai-dev</text>
+    <text x="950" y="600" font-family="Consolas, monospace" font-size="14" fill="#22D3EE">✓ Built in 3.2s</text>
+  </g>
+
+  <!-- 渐变装饰圆 -->
+  <circle cx="1100" cy="150" r="180" fill="#22D3EE" opacity="0.15"/>
+  <circle cx="180" cy="600" r="120" fill="#6366F1" opacity="0.12"/>
+
+  <!-- 主标题 -->
+  <text x="640" y="280" text-anchor="middle" font-family="微软雅黑, Arial" font-size="56" font-weight="bold" fill="#FFFFFF">
+    AI 驱动的全栈开发实践指南
+  </text>
+
+  <!-- 装饰线 -->
+  <rect x="540" y="320" width="200" height="3" fill="#22D3EE"/>
+
+  <!-- 副标题 -->
+  <text x="640" y="380" text-anchor="middle" font-family="微软雅黑, Arial" font-size="28" fill="#E2E8F0">
+    从零代码基础到产品落地的效能与边界
+  </text>
+
+  <!-- 底部装饰图标 -->
+  <g transform="translate(570, 480)">
+    <!-- 代码图标 -->
+    <rect x="0" y="0" width="48" height="48" rx="8" fill="#22D3EE" opacity="0.9"/>
+    <text x="24" y="32" text-anchor="middle" font-family="Arial" font-size="24" fill="#1E3A5F">&lt;/&gt;</text>
+
+    <!-- 箭头 -->
+    <text x="70" y="32" text-anchor="middle" font-family="Arial" font-size="24" fill="#22D3EE">→</text>
+
+    <!-- AI 图标 -->
+    <rect x="100" y="0" width="48" height="48" rx="8" fill="#6366F1" opacity="0.9"/>
+    <text x="124" y="32" text-anchor="middle" font-family="Arial" font-size="24" fill="#FFFFFF">AI</text>
+
+    <!-- 箭头 -->
+    <text x="170" y="32" text-anchor="middle" font-family="Arial" font-size="24" fill="#22D3EE">→</text>
+
+    <!-- 产品图标 -->
+    <rect x="200" y="0" width="48" height="48" rx="8" fill="#22D3EE" opacity="0.9"/>
+    <text x="224" y="32" text-anchor="middle" font-family="Arial" font-size="24" fill="#1E3A5F">📱</text>
+  </g>
+
+  <!-- 底部说明 -->
+  <text x="640" y="620" text-anchor="middle" font-family="微软雅黑, Arial" font-size="16" fill="#94A3B8">
+    [李修明/数智城市部]
+  </text>
+</svg>

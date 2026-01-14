@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景渐变 - 清新明亮 -->
+  <defs>
+    <linearGradient id="bg-gradient-03" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F0FDFA;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FEF9C3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DBEAFE;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg-gradient-03)"/>
+
+  <!-- 顶部色条 -->
+  <rect width="1280" height="8" fill="#1E3A5F"/>
+
+  <!-- 标题 -->
+  <text x="640" y="70" text-anchor="middle" font-family="微软雅黑, Arial" font-size="42" font-weight="bold" fill="#1E3A5F">
+    效率的指数级提升
+  </text>
+
+  <!-- 分隔线 -->
+  <rect x="540" y="95" width="200" height="3" fill="#22D3EE"/>
+
+  <!-- 副标题 -->
+  <text x="640" y="135" text-anchor="middle" font-family="微软雅黑, Arial" font-size="22" fill="#64748B">
+    为何选择 AI 编程？
+  </text>
+
+  <!-- 四宫格布局 -->
+  <!-- 第一行 -->
+  <!-- 极速MVP -->
+  <g transform="translate(80, 180)">
+    <rect width="520" height="200" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- 图标背景 -->
+    <circle cx="60" cy="60" r="40" fill="#FEF3C7"/>
+    <text x="60" y="72" text-anchor="middle" font-family="Arial" font-size="36">🚀</text>
+    <!-- 标题 -->
+    <text x="120" y="50" font-family="微软雅黑, Arial" font-size="24" font-weight="bold" fill="#1E3A5F">
+      极速 MVP
+    </text>
+    <!-- 内容 -->
+    <text x="120" y="85" font-family="微软雅黑, Arial" font-size="16" fill="#64748B">
+      <tspan x="120" dy="0">开发周期从"周"缩短至"小时"</tspan>
+      <tspan x="120" dy="25">效率提升 30% - 50%</tspan>
+    </text>
+    <!-- 底部强调 -->
+    <rect x="30" y="140" width="460" height="40" rx="8" fill="#FEF3C7"/>
+    <text x="260" y="166" text-anchor="middle" font-family="微软雅黑, Arial" font-size="14" font-weight="bold" fill="#92400E">
+      当天想法，当天演示
+    </text>
+  </g>
+
+  <!-- 全栈平民化 -->
+  <g transform="translate(680, 180)">
+    <rect width="520" height="200" rx="12" fill="#FFFFFF" stroke="#22D3EE" stroke-width="2"/>
+    <!-- 图标背景 -->
+    <circle cx="60" cy="60" r="40" fill="#E0F2FE"/>
+    <text x="60" y="72" text-anchor="middle" font-family="Arial" font-size="36">🧩</text>
+    <!-- 标题 -->
+    <text x="120" y="50" font-family="微软雅黑, Arial" font-size="24" font-weight="bold" fill="#1E3A5F">
+      全栈平民化
+    </text>
+    <!-- 内容 -->
+    <text x="120" y="85" font-family="微软雅黑, Arial" font-size="16" fill="#64748B">
+      <tspan x="120" dy="0">只要有逻辑，无需懂编程语法</tspan>
+      <tspan x="120" dy="25">Java / Vue / SQL 不再是门槛</tspan>
+    </text>
+    <!-- 底部强调 -->
+    <rect x="30" y="140" width="460" height="40" rx="8" fill="#E0F2FE"/>
+    <text x="260" y="166" text-anchor="middle" font-family="微软雅黑, Arial" font-size="14" font-weight="bold" fill="#0369A1">
+      逻辑思维 > 编码语法
+    </text>
+  </g>
+
+  <!-- 第二行 -->
+  <!-- 即时排错 -->
+  <g transform="translate(80, 410)">
+    <rect width="520" height="200" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- 图标背景 -->
+    <circle cx="60" cy="60" r="40" fill="#DCFCE7"/>
+    <text x="60" y="72" text-anchor="middle" font-family="Arial" font-size="36">🔧</text>
+    <!-- 标题 -->
+    <text x="120" y="50" font-family="微软雅黑, Arial" font-size="24" font-weight="bold" fill="#1E3A5F">
+      即时排错
+    </text>
+    <!-- 内容 -->
+    <text x="120" y="85" font-family="微软雅黑, Arial" font-size="16" fill="#64748B">
+      <tspan x="120" dy="0">复制错误日志 → AI 给出修复方案</tspan>
+      <tspan x="120" dy="25">秒级定位问题，无需逐行调试</tspan>
+    </text>
+    <!-- 底部强调 -->
+    <rect x="30" y="140" width="460" height="40" rx="8" fill="#DCFCE7"/>
+    <text x="260" y="166" text-anchor="middle" font-family="微软雅黑, Arial" font-size="14" font-weight="bold" fill="#166534">
+      告别 StackOverflow 等待
+    </text>
+  </g>
+
+  <!-- 文档同步 -->
+  <g transform="translate(680, 410)">
+    <rect width="520" height="200" rx="12" fill="#FFFFFF" stroke="#6366F1" stroke-width="2"/>
+    <!-- 图标背景 -->
+    <circle cx="60" cy="60" r="40" fill="#EDE9FE"/>
+    <text x="60" y="72" text-anchor="middle" font-family="Arial" font-size="36">📚</text>
+    <!-- 标题 -->
+    <text x="120" y="50" font-family="微软雅黑, Arial" font-size="24" font-weight="bold" fill="#1E3A5F">
+      文档同步
+    </text>
+    <!-- 内容 -->
+    <text x="120" y="85" font-family="微软雅黑, Arial" font-size="16" fill="#64748B">
+      <tspan x="120" dy="0">代码生成的同时，API 文档与</tspan>
+      <tspan x="120" dy="25">部署说明一并完成</tspan>
+    </text>
+    <!-- 底部强调 -->
+    <rect x="30" y="140" width="460" height="40" rx="8" fill="#EDE9FE"/>
+    <text x="260" y="166" text-anchor="middle" font-family="微软雅黑, Arial" font-size="14" font-weight="bold" fill="#5B21B6">
+      代码即文档
+    </text>
+  </g>
+
+  <!-- 底部总结 -->
+  <g transform="translate(640, 650)">
+    <rect x="-200" y="-20" width="400" height="36" rx="18" fill="#1E3A5F"/>
+    <text x="0" y="5" text-anchor="middle" font-family="微软雅黑, Arial" font-size="16" fill="#FFFFFF">
+      核心价值：<tspan fill="#22D3EE" font-weight="bold">降本 • 增效 • 普惠</tspan>
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  
+  <defs>
+    <linearGradient id="bg-gradient-02" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E0F2FE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EDE9FE;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg-gradient-02)" />
+
+  
+  <rect width="1280" height="8" fill="#1E3A5F" />
+
+  
+  <text x="640" y="70" text-anchor="middle" font-family="微软雅黑, Arial" font-size="42" font-weight="bold" fill="#1E3A5F">
+    软件开发的新纪元
+  </text>
+
+  
+  <rect x="540" y="95" width="200" height="3" fill="#22D3EE" />
+
+  
+  <text x="640" y="135" text-anchor="middle" font-family="微软雅黑, Arial" font-size="22" fill="#64748B">
+    开发模式的范式转移
+  </text>
+
+  
+  <g transform="translate(80, 180)">
+    
+    <path fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" d="M12,0 H508 A12,12 0 0 1 520,12 V438 A12,12 0 0 1 508,450 H12 A12,12 0 0 1 0,438 V12 A12,12 0 0 1 12,0 Z" />
+
+    
+    <path fill="#94A3B8" d="M12,0 H88 A12,12 0 0 1 100,12 V28 A12,12 0 0 1 88,40 H12 A12,12 0 0 1 0,28 V12 A12,12 0 0 1 12,0 Z" />
+    <text x="50" y="27" text-anchor="middle" font-family="微软雅黑, Arial" font-size="18" font-weight="bold" fill="#FFFFFF">
+      过去
+    </text>
+
+    
+    <g transform="translate(210, 70)">
+      <circle cx="50" cy="50" r="50" fill="#F1F5F9" />
+      
+      <text x="50" y="55" text-anchor="middle" font-family="Arial" font-size="40">😓</text>
+    </g>
+
+    
+    <g transform="translate(40, 160)">
+      <text fill="#475569" font-family="微软雅黑, Arial" font-size="20" x="0" y="0">• 人类编写逻辑</text><text fill="#475569" font-family="微软雅黑, Arial" font-size="20" x="0" y="40">• 人类编写代码</text><text fill="#475569" font-family="微软雅黑, Arial" font-size="20" x="0" y="80">• 语法学习周期长</text><text fill="#475569" font-family="微软雅黑, Arial" font-size="20" x="0" y="120">• 调试耗时耗力</text><text fill="#64748B" font-family="微软雅黑, Arial" font-size="16" x="0" y="180">角色：程序员</text></g>
+
+    
+    <g transform="translate(60, 380)">
+      <path fill="#E2E8F0" d="M8,0 H112 A8,8 0 0 1 120,8 V32 A8,8 0 0 1 112,40 H8 A8,8 0 0 1 0,32 V8 A8,8 0 0 1 8,0 Z" />
+      <text x="60" y="26" text-anchor="middle" font-family="微软雅黑" font-size="14" fill="#475569">需求</text>
+      <text x="140" y="26" text-anchor="middle" font-family="Arial" font-size="20" fill="#94A3B8">→</text>
+      <path fill="#E2E8F0" d="M178,0 H282 A8,8 0 0 1 290,8 V32 A8,8 0 0 1 282,40 H178 A8,8 0 0 1 170,32 V8 A8,8 0 0 1 178,0 Z" />
+      <text x="230" y="26" text-anchor="middle" font-family="微软雅黑" font-size="14" fill="#475569">编码</text>
+      <text x="310" y="26" text-anchor="middle" font-family="Arial" font-size="20" fill="#94A3B8">→</text>
+      <path fill="#E2E8F0" d="M348,0 H452 A8,8 0 0 1 460,8 V32 A8,8 0 0 1 452,40 H348 A8,8 0 0 1 340,32 V8 A8,8 0 0 1 348,0 Z" />
+      <text x="400" y="26" text-anchor="middle" font-family="微软雅黑" font-size="14" fill="#475569">交付</text>
+    </g>
+  </g>
+
+  
+  <g transform="translate(620, 380)">
+    <circle cx="20" cy="0" r="30" fill="#22D3EE" />
+    <text x="20" y="8" text-anchor="middle" font-family="Arial" font-size="28" fill="#FFFFFF">→</text>
+  </g>
+
+  
+  <g transform="translate(680, 180)">
+    
+    <path fill="#FFFFFF" stroke="#22D3EE" stroke-width="3" d="M12,0 H508 A12,12 0 0 1 520,12 V438 A12,12 0 0 1 508,450 H12 A12,12 0 0 1 0,438 V12 A12,12 0 0 1 12,0 Z" />
+
+    
+    <path fill="#22D3EE" d="M12,0 H88 A12,12 0 0 1 100,12 V28 A12,12 0 0 1 88,40 H12 A12,12 0 0 1 0,28 V12 A12,12 0 0 1 12,0 Z" />
+    <text x="50" y="27" text-anchor="middle" font-family="微软雅黑, Arial" font-size="18" font-weight="bold" fill="#FFFFFF">
+      现在
+    </text>
+
+    
+    <g transform="translate(210, 70)">
+      <circle cx="50" cy="50" r="50" fill="#E0F2FE" />
+      
+      <text x="50" y="55" text-anchor="middle" font-family="Arial" font-size="40">🎯</text>
+    </g>
+
+    
+    <g transform="translate(40, 160)">
+      <text fill="#475569" font-family="微软雅黑, Arial" font-size="20" x="0" y="0">• 人类定义逻辑</text><text fill="#1E3A5F" font-family="微软雅黑, Arial" font-size="20" x="0" y="40" font-weight="bold">• AI 实现代码</text><text fill="#475569" font-family="微软雅黑, Arial" font-size="20" x="0" y="80">• 自然语言交互</text><text fill="#475569" font-family="微软雅黑, Arial" font-size="20" x="0" y="120">• 快速迭代验证</text><text fill="#1E3A5F" font-family="微软雅黑, Arial" font-size="16" x="0" y="180" font-weight="bold">角色：产品经理 + 技术验收</text></g>
+
+    
+    <g transform="translate(60, 380)">
+      <path fill="#22D3EE" d="M8,0 H112 A8,8 0 0 1 120,8 V32 A8,8 0 0 1 112,40 H8 A8,8 0 0 1 0,32 V8 A8,8 0 0 1 8,0 Z" />
+      <text x="60" y="26" text-anchor="middle" font-family="微软雅黑" font-size="14" fill="#FFFFFF">需求</text>
+      <text x="140" y="26" text-anchor="middle" font-family="Arial" font-size="20" fill="#22D3EE">→</text>
+      <path fill="#6366F1" d="M178,0 H282 A8,8 0 0 1 290,8 V32 A8,8 0 0 1 282,40 H178 A8,8 0 0 1 170,32 V8 A8,8 0 0 1 178,0 Z" />
+      <text x="230" y="26" text-anchor="middle" font-family="微软雅黑" font-size="14" fill="#FFFFFF">AI</text>
+      <text x="310" y="26" text-anchor="middle" font-family="Arial" font-size="20" fill="#22D3EE">→</text>
+      <path fill="#22D3EE" d="M348,0 H452 A8,8 0 0 1 460,8 V32 A8,8 0 0 1 452,40 H348 A8,8 0 0 1 340,32 V8 A8,8 0 0 1 348,0 Z" />
+      <text x="400" y="26" text-anchor="middle" font-family="微软雅黑" font-size="14" fill="#FFFFFF">交付</text>
+    </g>
+  </g>
+
+  
+  <g transform="translate(640, 670)">
+    <text text-anchor="middle" font-family="微软雅黑, Arial" font-size="16" fill="#64748B">
+      适用场景：内部管理后台 • 数据看板 • MVP原型 • 简单应用工具
+    </text>
+  </g>
+</svg>
