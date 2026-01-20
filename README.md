@@ -1,6 +1,6 @@
 # PPT Master - AI 驱动的多格式 SVG 内容生成系统
 
-[![Version](https://img.shields.io/badge/version-v1.0.0-blue.svg)](./VERSION)
+[![Version](https://img.shields.io/badge/version-v1.1.0-blue.svg)](./VERSION)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/hugohe3/ppt-master.svg)](https://github.com/hugohe3/ppt-master/stargazers)
 
@@ -156,6 +156,7 @@ PPT Master 是一个创新的 AI 辅助视觉内容创作系统，通过多角�
 📊 **数据可视化** - 内置图表、时间轴、KPI 展示等专业组件
 🎯 **CRAP 设计原则** - 遵循对比、重复、对齐、亲密性四大核心原则
 🖼️ **纯 SVG 输出** - 高质量矢量图形，自动适配不同尺寸，无需第三方依赖
+🎤 **演讲者备注** - 自动生成讲稿并嵌入 PPTX，支持演讲者视图 🆕
 🔄 **迭代优化** - 支持逐页生成和反馈修改
 
 ## 系统架构
@@ -163,9 +164,14 @@ PPT Master 是一个创新的 AI 辅助视觉内容创作系统，通过多角�
 ### 快速概览
 
 ```
-用户输入文档
+用户输入 (PDF/URL/Markdown)
     ↓
-[Strategist] 策略师 - 内容规划与设计规范
+[源内容转换] 自动触发
+    ├─ PDF → pdf_to_md.py
+    ├─ URL → web_to_md.py / web_to_md.cjs
+    └─ MD  → 直接读取
+    ↓
+[Strategist] 策略师 - 八项确认与设计规范
     │
     ├─ 图片方式包含「AI 生成」?
     │       │
@@ -180,12 +186,12 @@ PPT Master 是一个创新的 AI 辅助视觉内容创作系统，通过多角�
     ↓
 SVG 文件 (svg_output/)
     ↓
-后处理工具（用户自行调用）
+后处理工具（自动执行）
     ├── finalize_svg.py    → svg_final/（嵌入图标 + 修复图片宽高比 + 嵌入图片 + 文本扁平化 + 圆角转Path）
-    └── svg_to_pptx.py     → output.pptx（导出 PowerPoint）
+    └── svg_to_pptx.py     → output.pptx（导出 PowerPoint + 嵌入演讲者备注）
 ```
 
-> **注意**: Image_Generator 是串行环节，图片归集完成后才进入 Executor 阶段。
+> **注意**: 源内容转换是强制触发的，识别到 PDF/URL 后必须立即调用工具。Image_Generator 是串行环节，图片归集完成后才进入 Executor 阶段。
 
 ### 完整工作流程图
 
@@ -303,7 +309,7 @@ graph TD
   5. 🎨 **配色方案**: 给出主导色、辅助色、强调色的具体 HEX 色值
   6. 🔣 **图标方式**: A) Emoji B) AI生成 C) 内置图标库 D) 自定义路径
   7. 🖼️ **图片使用**: A) 不使用 B) 用户提供 C) AI生成 D) 占位符预留
-  8. 📝 **字体方案**: 根据内容特征推荐字体组合（标题/正文/强调）
+  8. 📝 **排版方案**: 字体组合（P1-P5预设或自定义）+ 正文字号基准（14-20pt）
 - **智能解构**: 将源文档拆解并重组为清晰的页面序列
 - **色彩方案**: 提出完整的配色方案（主导色、辅助色、基础色调）
 - **布局规划**: 规划页面序列和推荐布局方案
@@ -444,7 +450,7 @@ graph TD
    5. **配色方案**: 主导色、辅助色、强调色（提供具体 HEX 色值）
    6. **图标方式**: A) Emoji B) AI生成 C) 内置图标库 D) 自定义路径
    7. **图片使用**: A) 不使用 B) 用户提供 C) AI生成 D) 占位符预留
-   8. **字体方案**: 根据内容特征推荐字体组合（标题/正文/强调）
+   8. **排版方案**: 字体组合（P1-P5预设）+ 正文字号基准（14-20pt）
 
    💡 Strategist 不仅会提出问题，还会主动提供专业建议供你参考或确认
 
@@ -498,6 +504,8 @@ Strategist: 在开始分析您的内容之前，我需要先完成八项确认�
 6. 图标方式：[建议] C) 内置图标库，专业简洁
 
 7. 图片使用：[建议] A) 不使用图片，数据报告以图表为主
+
+8. 排版方案：[建议] P1 预设（微软雅黑+Arial），正文 18pt 基准
 
 用户: 同意你的建议
 
@@ -680,7 +688,7 @@ ppt-master/
 
 ### 输出管理
 
-1. **文件命名** - 使用清晰的命名规则（如：`slide_01_cover.svg`）
+1. **文件命名** - 使用清晰的命名规则（如：`01_cover.svg`）
 2. **版本控制** - 保存每次迭代的版本
 3. **格式转换** - 根据需要转换为 PNG 或 PDF
 4. **项目组织** - 将每个演示项目放在 `projects/` 目录下，包含设计规范和 SVG 输出
@@ -739,8 +747,8 @@ projects/
     ├── 来源文档.md                        # 源文档（可选）
     ├── preview.html                      # 预览页面（自动生成）
     └── svg_output/                       # 生成的SVG文件
-        ├── slide_01_cover.svg
-        ├── slide_02_xxx.svg
+        ├── 01_cover.svg
+        ├── 02_xxx.svg
         └── ...
 ```
 

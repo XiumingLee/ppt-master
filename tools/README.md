@@ -463,7 +463,7 @@ python3 tools/error_helper.py missing_readme project_path=my_project
 
 ```bash
 # 检查单个文件
-python3 tools/svg_quality_checker.py examples/project/svg_output/slide_01.svg
+python3 tools/svg_quality_checker.py examples/project/svg_output/01_cover.svg
 
 # 检查整个目录
 python3 tools/svg_quality_checker.py examples/project/svg_output
@@ -518,12 +518,16 @@ python3 tools/svg_quality_checker.py examples/project --export
 - 支持使用 svg_output 或 svg_final 目录
 - SVG 在 PowerPoint 中保持可编辑
 - **支持页面切换动画和入场动画**
+- **自动嵌入演讲备注**（从 notes/ 目录读取）
 
 **用法**:
 
 ```bash
-# 推荐：使用后处理完成的版本
+# 推荐：使用后处理完成的版本（默认嵌入备注）
 python3 tools/svg_to_pptx.py <项目路径> -s final
+
+# 禁用演讲备注
+python3 tools/svg_to_pptx.py <项目路径> -s final --no-notes
 
 # 使用原始版本
 python3 tools/svg_to_pptx.py <项目路径>
@@ -537,6 +541,19 @@ python3 tools/svg_to_pptx.py <项目路径> -t fade --transition-duration 1.0
 # 静默模式
 python3 tools/svg_to_pptx.py <项目路径> -s final -q
 ```
+
+**演讲备注**:
+
+工具自动读取 `notes/` 目录中的 Markdown 备注文件，并嵌入到 PPTX 的演讲者备注中。
+
+**文件命名支持两种方式**：
+- **推荐**：与 SVG 同名（如 `01_封面.svg` 对应 `notes/01_封面.md`）
+- **兼容**：`slide01.md` 格式（向后兼容）
+
+| 参数 | 说明 |
+|------|------|
+| 默认 | 自动嵌入备注（无备注文件则留空） |
+| `--no-notes` | 禁用备注嵌入 |
 
 **切换效果参数**:
 
@@ -589,6 +606,7 @@ pip install python-pptx
 - 需要 PowerPoint 2016+ 才能正确显示
 - 文件体积比 PNG 方案小很多
 - 切换效果默认关闭，需要用户显式启用
+- 演讲备注默认开启，使用 `--no-notes` 禁用
 
 ---
 
@@ -964,7 +982,7 @@ python3 tools/svg_rect_to_path.py examples/ppt169_demo/svg_output/01_cover.svg
 python3 tools/fix_image_aspect.py path/to/slide.svg
 
 # 处理多个文件
-python3 tools/fix_image_aspect.py slide_01.svg slide_02.svg slide_03.svg
+python3 tools/fix_image_aspect.py 01_cover.svg 02_toc.svg 03_content.svg
 
 # 预览模式（不修改文件）
 python3 tools/fix_image_aspect.py --dry-run path/to/slide.svg

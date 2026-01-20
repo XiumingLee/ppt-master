@@ -90,138 +90,23 @@ class ProjectManager:
 
         # 创建目录结构
         project_path.mkdir(parents=True, exist_ok=True)
-        (project_path / 'svg_output').mkdir(exist_ok=True)
-        (project_path / 'images').mkdir(exist_ok=True)
+        (project_path / 'svg_output').mkdir(exist_ok=True)   # 原始版本（带占位符）
+        (project_path / 'svg_final').mkdir(exist_ok=True)    # 最终版本（后处理完成）
+        (project_path / 'images').mkdir(exist_ok=True)       # 图片资源
+        (project_path / 'notes').mkdir(exist_ok=True)        # 演讲备注
 
         # 获取画布格式信息
         canvas_info = self.CANVAS_FORMATS.get(
             canvas_format, self.CANVAS_FORMATS['ppt169'])
 
-        # 创建设计规范与内容大纲
-        spec_content = f"""# {project_name} - 设计规范与内容大纲
+        # 获取画布格式信息
+        canvas_info = self.CANVAS_FORMATS.get(
+            canvas_format, self.CANVAS_FORMATS['ppt169'])
 
-## [INFO] 项目信息
-
-| 项目 | 内容 |
-|------|------|
-| **项目名称** | {project_name} |
-| **画布格式** | {canvas_info['name']} ({canvas_info['dimensions']}) |
-| **页数** | [待定] |
-| **设计风格** | {design_style} |
-| **目标受众** | [待填写] |
-| **使用场景** | [待填写] |
-| **创建日期** | {datetime.now().strftime('%Y-%m-%d')} |
-
----
-
-## [DESIGN] 设计规范
-
-### 1. 画布设置
-
-- **尺寸**: {canvas_info['dimensions']}
-- **viewBox**: `{canvas_info['viewbox']}`
-- **安全边距**: 60px（四边）
-- **内容区域**: [根据画布计算]
-
-### 2. 配色方案
-
-| 用途 | 色值 | 说明 |
-|------|------|------|
-| 背景色 | `#FFFFFF` | 页面主背景 |
-| 卡片背景 | `#F8FAFC` | 次级容器 |
-| 边框色 | `#E5E7EB` | 分隔线、边框 |
-| 主强调色 | `#[待定]` | 标题、重点强调 |
-| 次强调色 | `#[待定]` | 次要强调、图标 |
-| 成功色 | `#10B981` | 正向指标 |
-| 警示色 | `#EF4444` | 问题标注 |
-| 主文字 | `#1F2937` | 标题、重要文字 |
-| 次文字 | `#6B7280` | 正文、说明 |
-| 弱文字 | `#9CA3AF` | 辅助信息、页脚 |
-
-### 3. 字体规范
-
-| 层级 | 字号 | 字重 | 颜色 | 用途 |
-|------|------|------|------|------|
-| H1 | 36px | Bold | `#1F2937` | 页面主标题 |
-| H2 | 24px | SemiBold | `#1F2937` | 章节标题 |
-| H3 | 20px | SemiBold | `#1F2937` | 卡片标题 |
-| Body | 16px | Regular | `#6B7280` | 正文内容 |
-| Small | 14px | Regular | `#9CA3AF` | 说明文字、页脚 |
-
-**字体栈**: `"PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif`
-
-### 4. 布局规范
-
-- **卡片间距**: 24px
-- **卡片圆角**: 12px
-- **卡片内边距**: 24px
-- **元素间距**: 16px（同组）、32px（跨组）
-
-### 5. 技术约束
-
-- [OK] 使用 `<tspan>` 进行手动换行
-- [NO] 禁止使用 `<foreignObject>`
-- [OK] 背景使用 `<rect>` 元素
-- [OK] 遵循 CRAP 设计原则（对齐、对比、重复、亲密性）
-
----
-
-## [CONTENT] 内容大纲
-
-### Slide 01 - 封面
-**核心信息**: [主题]
-
-- 主标题
-- 副标题
-- 日期/作者信息
-
----
-
-### Slide 02 - [页面名称]
-**核心信息**: [一句话概括]
-
-- [内容要点1]
-- [内容要点2]
-- [内容要点3]
-
----
-
-[继续添加更多页面...]
-
----
-
-## [RESOURCE] 图片资源清单（如需要）
-
-| 文件名 | 尺寸 | 用途 | 使用页面 | 状态 |
-|--------|------|------|----------|------|
-| cover_bg.png | {canvas_info['dimensions']} | 封面背景 | Slide 01 | [待生成] |
-
----
-
-## [CHECK] 设计检查清单
-
-### 生成前
-- [ ] 内容符合页面容量
-- [ ] 布局模式选择正确
-- [ ] 颜色使用符合语义
-
-### 生成后
-- [ ] viewBox = `{canvas_info['viewbox']}`
-- [ ] 无 `<foreignObject>` 元素
-- [ ] 所有文本可读（≥14px）
-- [ ] 内容在安全区域内
-- [ ] 所有元素对齐到网格
-- [ ] 相同元素保持一致样式
-- [ ] 颜色符合规范
-
----
-
-*最后更新: {datetime.now().strftime('%Y-%m-%d')}*
-"""
-
-        with open(project_path / '设计规范与内容大纲.md', 'w', encoding='utf-8') as f:
-            f.write(spec_content)
-
+        # 提示用户下一步操作 (不再自动创建空的设计规范文件)
+        print(f"项目目录已创建: {project_path}")
+        print(f"画布格式: {canvas_info['name']} ({canvas_info['dimensions']})")
+        
         return str(project_path)
 
     def validate_project(self, project_path: str) -> Tuple[bool, List[str], List[str]]:
@@ -262,18 +147,22 @@ class ProjectManager:
             if len(svg_files) == 0:
                 warnings.append("svg_output 目录为空")
             else:
-                # 验证 SVG 文件命名
+                # 验证 SVG 文件命名（支持两种格式）
+                # 格式1: slide_01_name.svg（英文项目）
+                # 格式2: 01_封面.svg 或 P01_封面.svg（中文项目）
                 for svg_file in svg_files:
-                    if not re.match(r'^slide_\d+_\w+\.svg$', svg_file.name):
+                    if not re.match(r'^(slide_\d+_\w+|P?\d+_.+)\.svg$', svg_file.name):
                         warnings.append(
-                            f"SVG 文件命名不规范: {svg_file.name} (建议: slide_XX_name.svg)")
+                            f"SVG 文件命名不规范: {svg_file.name} (建议: 01_名称.svg 或 slide_01_name.svg)")
 
                 # 检查 viewBox
                 self._validate_svg_viewbox(svg_files, warnings)
 
-        # 检查项目命名格式
+        # 检查项目命名格式（支持所有画布格式）
         dir_name = project_path.name
-        if not re.match(r'^.+_(ppt169|ppt43|wechat|xiaohongshu|story|moments|banner|a4)_\d{8}$', dir_name, re.IGNORECASE):
+        canvas_formats = '|'.join(self.CANVAS_FORMATS.keys())
+        pattern = rf'^.+_({canvas_formats})_\d{{8}}$'
+        if not re.match(pattern, dir_name, re.IGNORECASE):
             warnings.append(
                 f"项目目录命名不规范: {dir_name} (建议: name_format_YYYYMMDD)")
 
@@ -396,7 +285,7 @@ def main():
                 project_name, canvas_format, base_dir=base_dir)
             print(f"[OK] 项目已创建: {project_path}")
             print("\n下一步:")
-            print("1. 编辑 设计规范与内容大纲.md")
+            print("1. 生成并保存 设计规范与内容大纲.md (请参考 templates/design_spec_reference.md)")
             print("2. 将 SVG 文件放入 svg_output/ 目录")
         except Exception as e:
             print(f"[ERROR] 创建失败: {e}")
