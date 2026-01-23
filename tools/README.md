@@ -2,6 +2,97 @@
 
 本目录包含用于项目管理、验证和文件处理的实用工具。
 
+## 工具架构总览
+
+```mermaid
+graph TB
+    subgraph Input["📥 输入转换"]
+        A1[pdf_to_md.py]
+        A2[web_to_md.py / .cjs]
+    end
+    
+    subgraph Project["📁 项目管理"]
+        B1[project_manager.py]
+        B2[project_utils.py]
+        B1 --> B2
+    end
+    
+    subgraph Finalize["⚙️ 后处理 (finalize_svg.py)"]
+        direction TB
+        C0[finalize_svg.py<br/>统一入口]
+        C1[embed_icons.py]
+        C2[crop_images.py]
+        C3[fix_image_aspect.py]
+        C4[embed_images.py]
+        C5[flatten_tspan.py]
+        C6[svg_rect_to_path.py]
+        
+        C0 --> C1
+        C0 --> C2
+        C0 --> C3
+        C0 --> C4
+        C0 --> C5
+        C0 --> C6
+    end
+    
+    subgraph Export["📤 导出"]
+        D1[svg_to_pptx.py]
+    end
+    
+    subgraph Quality["🔍 质量检查"]
+        E1[svg_quality_checker.py]
+        E2[batch_validate.py]
+    end
+    
+    subgraph Utils["🛠️ 辅助工具"]
+        F1[rotate_images.py]
+        F2[analyze_images.py]
+        F3[svg_position_calculator.py]
+        F4[config.py]
+    end
+    
+    A1 --> B1
+    A2 --> B1
+    B1 -->|svg_output/| C0
+    C0 -->|svg_final/| D1
+    D1 -->|.pptx| Output[📊 PowerPoint]
+```
+
+### 核心工作流
+
+```
+源文档 → [pdf_to_md / web_to_md] → Markdown
+                    ↓
+              [project_manager init]
+                    ↓
+              AI 生成 SVG → svg_output/
+                    ↓
+              [finalize_svg] ← 聚合 6 个子工具
+                    ↓
+              svg_final/
+                    ↓
+              [svg_to_pptx] → output.pptx
+```
+
+### 工具分类快速索引
+
+| 分类 | 工具 | 说明 |
+|------|------|------|
+| **输入转换** | `pdf_to_md.py`, `web_to_md.py/.cjs` | 将 PDF/网页转为 Markdown |
+| **项目管理** | `project_manager.py` | 创建、验证项目 |
+| **后处理** | `finalize_svg.py` ⭐ | 统一入口，调用下方 6 个工具 |
+| ↳ 子工具 | `embed_icons.py` | 嵌入图标占位符 |
+| ↳ 子工具 | `crop_images.py` | 智能裁剪图片 |
+| ↳ 子工具 | `fix_image_aspect.py` | 修复图片宽高比 |
+| ↳ 子工具 | `embed_images.py` | Base64 嵌入图片 |
+| ↳ 子工具 | `flatten_tspan.py` | 文本扁平化 |
+| ↳ 子工具 | `svg_rect_to_path.py` | 圆角矩形转 Path |
+| **导出** | `svg_to_pptx.py` | SVG 转 PowerPoint |
+| **质量检查** | `svg_quality_checker.py`, `batch_validate.py` | 验证 SVG 规范 |
+| **辅助** | `config.py`, `analyze_images.py`, `rotate_images.py` | 配置和图片处理 |
+
+---
+
 ## 工具列表
 
 ### 0. pdf_to_md.py — PDF 转 Markdown 工具（推荐首选）
@@ -310,7 +401,7 @@ python3 tools/project_manager.py info projects/my_presentation_ppt169_20251116
 
 将含有多行 `<tspan>` 的 `<text>` 结构扁平化为多条独立的 `<text>` 元素，便于部分渲染器兼容或文本抽取。
 
-**注意**: 生成端仍应使用 `<tspan>` 手动换行（禁止 `<foreignObject>`）。此工具仅用于后处理。
+**注意**: 生成端仍应使用 `<tspan>` 手动换行（禁用项详见 `AGENTS.md`）。此工具仅用于后处理。
 
 **用法**:
 
@@ -441,7 +532,7 @@ python3 tools/error_helper.py missing_readme project_path=my_project
 - `missing_spec` - 缺少设计规范
 - `missing_svg_output` - 缺少 svg_output 目录
 - `viewbox_mismatch` - viewBox 不匹配
-- `foreignobject_detected` - 检测到禁用元素
+- `foreignobject_detected` - 检测到禁用元素（详见 AGENTS.md 黑名单）
 - 等等...
 
 ---
@@ -453,11 +544,10 @@ python3 tools/error_helper.py missing_readme project_path=my_project
 **功能**:
 
 - 验证 viewBox 属性
-- 检测禁用元素（foreignObject）
+- 检测禁用元素（详见 AGENTS.md）
 - 检查字体使用
 - 验证 width/height 与 viewBox 一致性
 - 检查文本换行方式
-- 分析文件大小
 
 **用法**:
 
@@ -484,11 +574,10 @@ python3 tools/svg_quality_checker.py examples/project --export
 **检查项目**:
 
 - ✅ viewBox 属性存在且格式正确
-- ✅ 无 `<foreignObject>` 元素
+- ✅ 无禁用元素（详见 AGENTS.md）
 - ✅ 使用《设计规范》指定的字体
 - ✅ width/height 与 viewBox 一致
 - ✅ 文本使用 `<tspan>` 换行
-- ✅ 文件大小合理（< 500KB）
 
 ---
 
@@ -502,7 +591,7 @@ python3 tools/svg_quality_checker.py examples/project --export
 | `<g opacity="0.2">...</g>` | 每个子元素单独设置透明度 |
 | `<image opacity="0.3"/>` | 图片后加遮罩层 `<rect fill="背景色" opacity="0.7"/>` |
 
-> 📌 **记忆口诀**：PPT 不认 rgba、不认组透明、不认图片透明
+> 📌 **记忆口诀**：PPT 不认 rgba、不认组透明、不认图片透明、不认 marker
 
 ---
 
@@ -1195,4 +1284,3 @@ pip install python-pptx
 _最后更新: 2025-12-20_
 
 _gemini_watermark_remover.py 文档更新: 2025-12-20_
-
