@@ -361,21 +361,12 @@ subtle and elegant, suitable for presentation slide corners
 
 **方式一：使用本项目工具自动生成**（推荐）
 - 使用阿里云百炼 API 自动生成图片
+
 - 命令示例：
   ```bash
-
   # 生成图片
   PYTHONIOENCODING=utf-8 python tools/text_to_image_bailian.py "现代科技感抽象背景，深蓝渐变" -s "1280*720" -o projects/项目名/images/cover_bg.png
   ```
-- 支持的尺寸：
-  - `1280*1280` (1:1 方形，推荐)
-  - `1024*1024` (1:1 方形)
-  - `1280*720` (16:9 横版，适合 PPT)
-  - `1696*960` (16:9 横版，高分辨率)
-  - `720*1280` (9:16 竖版，适合 Story)
-  - `960*1696` (9:16 竖版，高分辨率)
-  - `1104*1472` (3:4 竖版，适合小红书)
-  - `1472*1104` (4:3 横版，适合 PPT 4:3)
 
 **方式二：手动生成**（常用方式）
 
