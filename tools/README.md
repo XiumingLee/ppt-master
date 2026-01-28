@@ -88,6 +88,7 @@ graph TB
 | ↳ 子工具 | `flatten_tspan.py` | 文本扁平化 |
 | ↳ 子工具 | `svg_rect_to_path.py` | 圆角矩形转 Path |
 | **导出** | `svg_to_pptx.py` | SVG 转 PowerPoint |
+| **讲稿处理** | `total_md_split.py` | 讲稿拆分工具 |
 | **质量检查** | `svg_quality_checker.py`, `batch_validate.py` | 验证 SVG 规范 |
 | **辅助** | `config.py`, `analyze_images.py`, `rotate_images.py` | 配置和图片处理 |
 
@@ -699,7 +700,90 @@ pip install python-pptx
 
 ---
 
-### 9. svg_position_calculator.py — SVG 位置计算与验证工具
+### 9. total_md_split.py — 讲稿拆分工具
+
+将 `total.md` 讲稿文件拆分为多个独立的讲稿文件，每个文件对应一个 SVG 页面。
+
+**功能**:
+
+- 读取 `total.md` 文件，解析其中的一级标题和讲稿内容
+- 检查 `svg_output` 文件夹中的 SVG 文件是否都有对应的讲稿
+- 如果存在 SVG 没有对应的讲稿，会输出错误提示要求重新生成讲稿文件
+- 如果全部匹配，根据名称对文档进行拆分，分成多个文档
+- 拆分后的文档命名与 SVG 文件同名，后缀改为 `.md`
+- 拆分后的文档**不包含**一级标题
+
+**用法**:
+
+```bash
+# 基本用法
+python3 tools/total_md_split.py <项目路径>
+
+# 指定输出目录
+python3 tools/total_md_split.py <项目路径> -o <输出目录>
+
+# 静默模式
+python3 tools/total_md_split.py <项目路径> -q
+```
+
+**示例**:
+
+```bash
+# 基本用法
+python3 tools/total_md_split.py projects/<svg 标题>_ppt169_YYYYMMDD
+
+# 指定输出目录
+python3 tools/total_md_split.py projects/<svg 标题>_ppt169_YYYYMMDD -o notes
+
+# 静默模式
+python3 tools/total_md_split.py projects/<svg 标题>_ppt169_YYYYMMDD -q
+```
+
+**讲稿格式要求**:
+
+`total.md` 文件需要使用以下格式：
+
+```markdown
+# 01_<页面标题>
+
+讲稿内容...
+
+---
+
+# 02_<页面标题>
+
+讲稿内容...
+
+---
+
+# 03_<页面名称>
+
+讲稿内容...
+```
+
+- 每个章节以 `# ` 开头的一级标题开始
+- 章节之间用 `---` 分隔
+- 讲稿内容在标题之后，直到下一个标题或文件结束
+
+**错误处理**:
+
+如果存在 SVG 文件没有对应的讲稿，工具会输出错误信息：
+
+```
+错误: SVG 文件与讲稿不匹配
+  缺失的讲稿: <N>_<页面标题>
+
+请重新生成讲稿文件，确保每个 SVG 都有对应的讲稿。
+```
+
+**依赖**:
+
+- Python 3.6+
+- 无外部依赖（仅使用标准库）
+
+---
+
+### 10. svg_position_calculator.py — SVG 位置计算与验证工具
 
 图表坐标的**事前计算**和**事后验证**工具，帮助确保 SVG 元素位置准确无误。
 
@@ -1003,7 +1087,7 @@ A: 支持 `ppt169`、`ppt43`、`xiaohongshu`、`moments` 等，详见 `project_u
 
 ---
 
-### 10. svg_rect_to_path.py — SVG 圆角矩形转 Path 工具
+### 11. svg_rect_to_path.py — SVG 圆角矩形转 Path 工具
 
 解决 SVG 在 PowerPoint 中「转换为形状」时圆角丢失的问题。
 
@@ -1053,7 +1137,7 @@ python3 tools/svg_rect_to_path.py examples/ppt169_demo/svg_output/01_cover.svg
 
 ---
 
-### 11. fix_image_aspect.py — SVG 图片宽高比修复工具
+### 12. fix_image_aspect.py — SVG 图片宽高比修复工具
 
 解决 SVG 中 `<image>` 元素在 PowerPoint「转换为形状」时图片拉伸变形的问题。
 
@@ -1098,7 +1182,7 @@ pip install Pillow  # 用于读取图片尺寸（推荐安装）
 
 ---
 
-### 12. gemini_watermark_remover.py — Gemini 水印去除工具
+### 13. gemini_watermark_remover.py — Gemini 水印去除工具
 
 去除 Gemini 生成图片右下角的水印 Logo。使用逆向混合算法还原原始像素。
 
@@ -1152,7 +1236,7 @@ pip install Pillow numpy
 
 ---
 
-### 13. embed_icons.py — SVG 图标嵌入工具
+### 14. embed_icons.py — SVG 图标嵌入工具
 
 将 SVG 文件中的图标占位符 (`<use ...>`) 替换为实际的图标路径数据，实现图标的“零依赖”嵌入。
 
