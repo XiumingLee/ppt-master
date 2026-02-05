@@ -131,13 +131,13 @@ User Input (PDF/URL/Markdown)
     ↓
 [Source Content Conversion] → pdf_to_md.py / web_to_md.py
     ↓
-[Create Project] → project_manager.py init
+[Create Project] → project_manager.py init <project_name> --format <format>
     ↓
-[Template Option] A) Use existing template B) No template C) Generate new template
+[Template Option] A) Use existing template B) No template
+    ↓
+[Need New Template?] → Use /create-template workflow separately
     ↓
 [Strategist] - Eight Confirmations & Design Specifications
-    ↓
-[Template_Designer] (Only triggered for option C)
     ↓
 [Image_Generator] (When AI generation is selected)
     ↓
@@ -145,14 +145,18 @@ User Input (PDF/URL/Markdown)
     ├── Visual Construction Phase: Generate all SVG pages → svg_output/
     └── Logic Construction Phase: Generate complete script → notes/total.md
     ↓
-[Optimizer_CRAP] (Optional)
-    ↓
 [Post-processing] → total_md_split.py (split notes) → finalize_svg.py → svg_to_pptx.py
     ↓
 Output: SVG + PPTX (auto-embeds notes)
+    ↓
+[Optimizer_CRAP] (Optional, only if the first full draft is unsatisfactory)
+    ↓
+If optimized: re-run post-processing and export
 ```
 
 > 📖 For detailed workflow, see [Workflow Tutorial](./docs/workflow_tutorial.md) and [Role Definitions](./roles/README.md)
+
+> 💡 **PPT Editing Tip**: The exported PPTX pages are in SVG format. To edit the content, select the page content in PowerPoint, right-click and choose **"Group" -> "Ungroup"** (or **"Convert to Shape"**). This feature requires **Office 2016** or later.
 
 ---
 
@@ -196,7 +200,7 @@ ppt-master/
 <summary><b>Q: How to use generated SVG files?</b></summary>
 
 - Open directly in browser to view
-- Export to PowerPoint using `svg_to_pptx.py`
+- Export to PowerPoint using `svg_to_pptx.py` (Note: Requires "Convert to Shape" in PPT for editing, Office 2016+ required)
 - Embed in HTML pages or edit with design tools
 
 </details>

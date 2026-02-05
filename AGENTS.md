@@ -1,124 +1,339 @@
-# AGENTS.md
+# AGENTS.md — PPT Master 完整指南
 
-本文件为 AI 代理协作指引。
+> ⚠️ **AI 代理注意**：本文件是 PPT 生成流程的完整指南，包含工作流程和规则手册。
+>
+> 执行 `/generate-ppt` 前必须阅读本文件。
+
+---
+
+## 📚 目录导航
+
+| 部分 | 内容 |
+|------|------|
+| [工作流程](#工作流程) | 从源文档到 PPT 的完整执行步骤 |
+| [规则手册](#规则手册) | 约束边界、技术规范、角色切换协议 |
+| [常用命令](#常用命令) | 工具命令快速参考 |
+| [重要资源](#重要资源) | 模板、图标、文档链接 |
+
+---
+
+# 工作流程
+
+> 📌 **这是 PPT Master 系统的主执行流程**。所有 PPT 生成任务都应从此工作流开始。
+
+## 工作流概览
+
+```
+源文档 → 创建项目 → 模板选项 → Strategist → [Image_Generator] → Executor → 后处理 → 导出
+```
+
+---
+
+## ⚠️ 阶段零：强制前置检查（不可跳过）
+
+**在执行任何步骤之前，必须完成以下检查：**
+
+### 检查项 1：确认已理解核心规则
+
+- [ ] 角色切换协议（切换角色前必须阅读角色定义文件）
+- [ ] SVG 技术约束（禁用功能黑名单、PPT 兼容性规则）
+- [ ] 源内容自动处理（PDF/URL 必须立即转换）
+
+**确认完成后，输出以下标记：**
+
+```markdown
+## ✅ 阶段零检查完成
+- [x] 已阅读 AGENTS.md
+- [x] 已理解核心规则
+- [ ] 开始执行阶段一
+```
+
+---
+
+## 阶段一：源内容处理（如需要）
+
+当用户提供 PDF 或 URL 时，**必须立即调用对应工具**：
+
+| 用户提供内容 | 必须调用的工具 | 命令 |
+|--------------|----------------|------|
+| **PDF 文件** | `pdf_to_md.py` | `python3 tools/pdf_to_md.py <文件路径>` |
+| **网页链接** | `web_to_md.py` | `python3 tools/web_to_md.py <URL>` |
+| **微信/高防站** | `web_to_md.cjs` | `node tools/web_to_md.cjs <URL>` |
+| **Markdown** | - | 直接 `view_file` 读取 |
+
+---
+
+## 阶段二：创建项目文件夹
+
+> ⚠️ **第一步！** 用户输入内容后必须立即创建
+
+// turbo
+```bash
+python3 tools/project_manager.py init <项目名称> --format <格式>
+```
+
+格式选项：`ppt169`（默认）、`ppt43`、`xhs`、`story` 等
+
+---
+
+## 阶段三：模板选项确认
+
+> ⚠️ **必须在策略师开始之前确认**，策略师需根据模板选项调整设计方案
+
+向用户询问模板选项（二选一）：
+
+### A) 使用已有模板
+
+**情况 1：模板在 repo 内**（如 `templates/layouts/` 下）
+
+检查模板目录内容，按类型分别复制：
+// turbo
+```bash
+# 复制模板文件（.svg, .md）到 templates/
+cp templates/layouts/<模板名>/*.svg <项目路径>/templates/
+cp templates/layouts/<模板名>/design_spec.md <项目路径>/templates/
+
+# 复制图片资源（.png, .jpg 等）到 images/
+# 注意：图片直接在模板目录下，不是在 images/ 子目录
+cp templates/layouts/<模板名>/*.png <项目路径>/images/ 2>/dev/null || true
+cp templates/layouts/<模板名>/*.jpg <项目路径>/images/ 2>/dev/null || true
+cp templates/layouts/<模板名>/*.jpeg <项目路径>/images/ 2>/dev/null || true
+```
+
+**情况 2：模板在 repo 外**（用户自备/其他项目）
+
+告知用户按以下规则手动复制：
+
+| 文件类型 | 目标目录 | 示例 |
+|----------|----------|------|
+| 模板 SVG 文件 | `<项目路径>/templates/` | `01_cover.svg`, `02_toc.svg` |
+| 设计规范文件 | `<项目路径>/templates/` | `design_spec.md` |
+| 图片资源 | `<项目路径>/images/` | `cover_bg.png`, `logo.svg` |
+
+等待用户确认文件已复制就绪后再继续。
+
+**模板内容检查**：
+```
+<项目路径>/
+├── templates/                # 模板文件
+│   ├── design_spec.md        # 设计规范（必须）
+│   ├── 01_cover.svg          # 封面模板
+│   ├── 02_toc.svg            # 目录模板
+│   ├── 03_chapter.svg        # 章节页模板
+│   ├── 04_content.svg        # 内容页模板
+│   └── 05_ending.svg         # 结尾页模板
+└── images/                   # 图片资源（如有）
+    ├── cover_bg.png
+    └── ...
+```
+
+> 📌 策略师需参考模板的配色、布局、风格进行设计
+
+### B) 不使用模板
+
+→ 自由生成，策略师完全自主设计
+
+
+
+---
+
+## 阶段四：Strategist 角色（必须，不可跳过）
+
+1. **阅读角色定义**：
+   ```
+   view_file: roles/Strategist.md
+   ```
+
+2. **完成八项确认**（强制要求）：
+   - 画布格式、页数范围、目标受众、风格目标
+   - 配色方案、图标使用、图片使用、排版方案
+
+3. **如果用户提供了图片**，运行图片分析：
+   // turbo
+   ```bash
+   python3 tools/analyze_images.py <项目路径>/images
+   ```
+
+4. **生成《设计规范与内容大纲》**：
+   - 参考模板：`templates/design_spec_reference.md`
+   - 保存到：`<项目路径>/设计规范与内容大纲.md`
+
+5. **阶段检查点**：
+   ```markdown
+   ## ✅ Strategist 阶段完成
+   - [x] 已完成八项确认
+   - [x] 已生成《设计规范与内容大纲》
+   - [x] 设计规范已保存到项目文件夹
+   - [ ] **下一步**: [Image_Generator / Executor_xxx]
+   ```
+
+---
+
+## 阶段五：Image_Generator 角色（条件触发）
+
+> **触发条件**：图片方式包含「C) AI 生成」（如 C、B+C、C+D）
+
+1. **阅读角色定义**：
+   ```
+   view_file: roles/Image_Generator.md
+   ```
+
+2. **分析图片资源清单**：
+   - 从《设计规范与内容大纲》中提取所有「状态=待生成」的图片
+   - 判断每张图片的类型（背景图/实景照片/插画/图表/装饰图案）
+
+3. **生成提示词文档**（必须保存为文件）：
+   - 保存到 `<项目路径>/images/image_prompts.md`
+   - 格式：主体描述 + 风格指令 + 色彩指令 + 构图指令 + 负面提示词 + Alt Text
+
+4. **生成图片**（三种方式）：
+
+   **方式一：直接生成**（如支持 generate_image 工具）
+   - 使用 `generate_image` 工具生成图片
+
+   **方式二：用户自行生成**
+   - 告知用户提示词文件位置
+   - 推荐平台：Gemini、Midjourney、DALL-E 3、Stable Diffusion
+
+   **方式三：Gemini 生成**（推荐高分辨率）
+   - 下载 Full Size 版本
+   - 去除水印：
+     // turbo
+     ```bash
+     python3 tools/gemini_watermark_remover.py <图片路径>
+     ```
+
+5. **验证图片就绪**：确认所有图片已保存到 `images/` 目录
+
+6. **阶段检查点**：
+   ```markdown
+   ## ✅ Image_Generator 阶段完成
+   - [x] 已创建提示词文档 `images/image_prompts.md`
+   - [x] 所有图片已保存到 images/ 目录
+   - [ ] **下一步**: Executor_xxx
+   ```
+
+---
+
+## 阶段六：Executor 角色
+
+1. **阅读角色定义**（根据风格选择）：
+   ```
+   view_file: roles/Executor_General.md        # 通用灵活风格
+   view_file: roles/Executor_Consultant.md     # 一般咨询风格
+   view_file: roles/Executor_Consultant_Top.md # 顶级咨询风格
+   ```
+
+2. **【视觉构建阶段】**：
+   - 批量生成 SVG 页面
+   - 保存到 `<项目路径>/svg_output/`
+
+3. **【逻辑构建阶段】**（必须）：
+   - 生成完整演讲备注文稿
+   - 保存到 `<项目路径>/notes/total.md`
+
+4. **阶段检查点**：
+   ```markdown
+   ## ✅ Executor 阶段完成
+   ### 视觉构建阶段
+   - [x] 所有 SVG 页面已生成到 svg_output/
+   
+   ### 逻辑构建阶段
+   - [x] 已生成完整演讲备注 notes/total.md
+   ```
+
+---
+
+## 阶段七：后处理与导出（自动执行）
+
+> ⚠️ **必须按顺序执行以下三个命令，不可省略或替换！**
+
+### 步骤 1：拆分演讲备注
+// turbo
+```bash
+python3 tools/total_md_split.py <项目路径>
+```
+
+### 步骤 2：SVG 后处理
+// turbo
+```bash
+python3 tools/finalize_svg.py <项目路径>
+```
+
+**此步骤执行以下处理**：
+- 嵌入图标（将占位符替换为实际图标代码）
+- 智能裁剪图片
+- 修复图片宽高比
+- 嵌入图片（Base64 编码，避免外部引用）
+- 文本扁平化
+- 圆角矩形转 Path（提高 PPT 兼容性）
+
+> ❌ **禁止**：使用 `cp` 命令替代此步骤！
+
+### 步骤 3：导出 PPTX
+// turbo
+```bash
+python3 tools/svg_to_pptx.py <项目路径> -s final
+```
+
+- `-s final` 参数指定从 `svg_final/` 目录读取
+- 默认会嵌入演讲备注
+
+---
+
+## 阶段八：Optimizer_CRAP（可选）
+
+> **触发条件**：用户要求优化 或 质量不足时主动建议
+
+1. **阅读角色定义**：
+   ```
+   view_file: roles/Optimizer_CRAP.md
+   ```
+
+2. **执行 CRAP 原则优化**
+
+3. **重新执行后处理与导出**（如有修改）
+
+---
+
+## 完成检查清单
+
+- [ ] 源内容已转换为 Markdown
+- [ ] 项目文件夹已创建
+- [ ] 模板选项已确认
+- [ ] 八项确认已完成
+- [ ] 设计规范已保存
+- [ ] 图片已就绪（如需要）
+- [ ] SVG 文件已生成到 `svg_output/`
+- [ ] 演讲备注已生成 `notes/total.md`
+- [ ] 后处理已执行（`finalize_svg.py`）
+- [ ] SVG 文件已复制到 `svg_final/`
+- [ ] PPTX 已导出
+
+---
+
+## 常见错误提醒
+
+| 错误 | 正确做法 |
+|------|----------|
+| 用 `cp` 复制 SVG 到 svg_final | 使用 `finalize_svg.py` |
+| 直接从 `svg_output` 导出 | 使用 `-s final` 从 `svg_final` 导出 |
+| 忘记拆分备注 | 先运行 `total_md_split.py` |
+| 忘记后处理 | 先运行 `finalize_svg.py` |
+| 跳过 Strategist 八项确认 | 必须完成，无论模板选项如何 |
+| 模板选项后才创建项目 | 先创建项目，再询问模板选项 |
+
+---
+
+# 规则手册
+
+> 以下是 PPT Master 系统的约束边界和技术规范，执行工作流时必须遵守。
+
+---
 
 ## 项目概述
 
-PPT Master 是一个 AI 驱动的多格式 SVG 内容生成系统，通过多角色协作将来源文档转化为高质量输出。这是一个「文档与工作流框架」项目，此处的"代码"特指由 AI 代理生成的 SVG 标记。
-
-## 角色与流程速查
-
-| 角色                        | 文件                               | 职责                                      |
-| --------------------------- | ---------------------------------- | ----------------------------------------- |
-| **Strategist**              | `roles/Strategist.md`              | 初次沟通、内容分析、设计规范编制          |
-| **Template_Designer**       | `roles/Template_Designer.md`       | 页面模板生成（用户选择「C) 生成新模板」） |
-| **Image_Generator**         | `roles/Image_Generator.md`         | AI 图片生成（条件触发）                   |
-| **Executor_General**        | `roles/Executor_General.md`        | 通用灵活风格 SVG 生成                     |
-| **Executor_Consultant**     | `roles/Executor_Consultant.md`     | 一般咨询风格 SVG 生成                     |
-| **Executor_Consultant_Top** | `roles/Executor_Consultant_Top.md` | 顶级咨询风格 SVG 生成（MBB 级）           |
-| **Optimizer_CRAP**          | `roles/Optimizer_CRAP.md`          | CRAP 原则视觉优化（可选）                 |
-
-### 工作流程
-
-```
-用户提供源文档（PDF/URL/Markdown）
-          │
-          ▼
-源内容转换工具（如需要）
-          │
-          ▼
-【创建项目文件夹】← ← ← ← ← 第一步！
-  python3 tools/project_manager.py init
-          │
-          ▼
-┌─────────────────────────────────────────┐
-│ 询问模板选项（三选一）                    │
-└─────────────────────────────────────────┘
-          │
-          ├─────────────────────────────────────────┐
-          │                                         │
-    A) 使用已有模板                                 │
-          │                                         │
-          ├→ 用户提供模板或从示例库选择             │
-          │  图片 → images/，其他 → templates/     │
-          │  （来源：用户自备/其他项目/示例库等）    │
-          │                                         │
-          │                                    B) 不使用模板
-          │                                         │
-          │                                         │
-          │                                         │
-    C) 生成新模板                                   │
-          │                                         │
-          │                                         │
-          │                                         │
-          ├─────────────────────────────────────────┘
-          │
-          ▼
-┌─────────────────────────────────────────┐
-│ Strategist（策略规划）← 必须，不可跳过    │
-│  • 八项确认                              │
-│  • 生成《设计规范与内容大纲》             │
-│  • 保存设计规范到项目文件夹              │
-└─────────────────────────────────────────┘
-          │
-          ├─ 模板选项 = C（生成新模板）?
-          │       │
-          │       YES ────────────────────────────┐
-          │                                       │
-          │       ┌──────────────────────────────────┐
-          │       │ Template_Designer（选项 C）      │
-          │       │  • 生成页面模板到 templates/     │
-          │       │  • 用户确认后继续                │
-          │       └──────────────────────────────────┘
-          │                                       │
-          │       ┌──────────────────────────────────┘
-          │       │
-          ├───────┘
-          │
-          ├─ 图片方式包含「C) AI 生成」?
-          │       │
-          │       YES → Image_Generator → 保存到 images/
-          │       │
-          │       NO ──────────────────────────────┐
-          │                                        │
-          ▼                                        ▼
-┌──────────────────────────────────────────────────┐
-│ Executor (General/Consultant/Consultant_Top)     │
-│                                                  │
-│  【视觉构建阶段】                                  │
-│   • 逐页生成 SVG（可基于模板）→ svg_output/       │
-│                                                  │
-│  【逻辑构建阶段】← ← ← ← 必须                      │
-│   • 生成完整讲稿 → notes/total.md                 │
-│                                                  │
-└──────────────────────────────────────────────────┘
-          │
-          ▼
-【后处理】← ← ← ← ← 自动执行
-  python3 tools/total_md_split.py  # 拆分讲稿
-  python3 tools/finalize_svg.py
-          │
-          ▼
-SVG 文件保存到 svg_final/
-          │
-          ▼
-【导出 PPTX】← ← ← ← ← 自动执行
-  python3 tools/svg_to_pptx.py
-          │
-          ▼
-Optimizer_CRAP (可选优化)
-```
-
-> **注意**:
->
-> - **项目文件夹必须在用户输入内容后立即创建**（第一步）
-> - **模板选项必须在策略师开始之前确认**，策略师需要根据模板选项调整设计方案
-> - 如选择 A（使用已有模板），策略师需参考模板的配色、布局、风格进行设计
-> - 如选择 C（生成新模板），策略师完成大纲后再调用模板设计师
-> - **策略师的「八项确认」是强制要求，无论模板选项如何都不可跳过**
-> - Image_Generator 是串行环节，图片归集完成后才进入 Executor 阶段
-> - 后处理和导出步骤由 AI 自动执行
-> - Optimizer_CRAP 仅在质量不足时使用；若使用优化，需重新运行后处理与导出以保持产物一致
+PPT Master 是一个 AI 驱动的多格式 SVG 内容生成系统，通过多角色协作将来源文档转化为高质量输出。
 
 ---
 
@@ -131,7 +346,7 @@ Optimizer_CRAP (可选优化)
 | 阶段         | 必须阅读的文件                     | 触发条件                                     |
 | ------------ | ---------------------------------- | -------------------------------------------- |
 | 策略规划     | `roles/Strategist.md`              | 用户提出新的 PPT/内容生成需求                |
-| 模板设计     | `roles/Template_Designer.md`       | 用户选择「C) 生成新模板」且策略师完成大纲后  |
+
 | 图片生成     | `roles/Image_Generator.md`         | 图片方式包含「C) AI 生成」（如 C、B+C、C+D） |
 | 通用风格执行 | `roles/Executor_General.md`        | 用户选择「A) 通用灵活」设计风格              |
 | 咨询风格执行 | `roles/Executor_Consultant.md`     | 用户选择「B) 一般咨询」设计风格              |
@@ -177,7 +392,7 @@ Optimizer_CRAP (可选优化)
 - [x] 已生成《设计规范与内容大纲》
 - [x] 设计规范已保存到项目文件夹
 - [x] 已确定图片资源清单（如需要）
-- [ ] **下一步**: [根据模板选项: Template_Designer（若选 C）/ Image_Generator / Executor_xxx]
+- [ ] **下一步**: [Image_Generator / Executor_xxx]
 ```
 
 #### Image_Generator 阶段检查点
@@ -206,7 +421,7 @@ Optimizer_CRAP (可选优化)
 ### 逻辑构建阶段（必须）
 - [x] 已生成完整演讲备注文稿 `notes/total.md`
 
-### 自动执行后处理
+### 自动执行后处理（默认由 AI 执行，必要时可手动运行）
 
 # 1. 拆分讲稿（将 total.md 拆分为各页独立文件）
 python3 tools/total_md_split.py <项目路径>
@@ -219,56 +434,29 @@ python3 tools/svg_to_pptx.py <项目路径> -s final
 ```
 
 > ⚠️ **强制要求**：演讲备注是 Executor 阶段的必须产出，SVG 页面生成完毕后必须进入「逻辑构建阶段」生成 `notes/total.md`，然后再进行后处理。
+> ⚠️ **优化提示**：仅在完整初版产出后考虑 Optimizer；若优化过，请重新运行后处理与导出以保持产物一致。
 
 ---
 
 ## 源内容自动处理（强制触发）
 
-### ⚠️ 强制规则：识别到源内容时必须立即调用工具
+### 强制规则
 
-当用户消息中出现以下内容时，**必须立即调用对应工具**，不得忽视或仅做文字回复：
+当用户提供 PDF 文件或网页链接时，**必须立即调用工具转换**：
 
-| 用户提供的内容             | 识别特征                            | 必须调用的工具                    | 示例命令                                |
-| -------------------------- | ----------------------------------- | --------------------------------- | --------------------------------------- |
-| **PDF 文件**               | `.pdf` 扩展名或用户明确提及"PDF"    | `pdf_to_md.py`                    | `python3 tools/pdf_to_md.py <文件路径>` |
-| **网页链接**               | `http://` 或 `https://` 开头的 URL  | `web_to_md.py` 或 `web_to_md.cjs` | `python3 tools/web_to_md.py <URL>`      |
-| **已转换的 Markdown 文件** | `.md` 扩展名，在 `projects/` 目录下 | 直接使用 `view_file` 读取         | `view_file <路径>`                      |
+| 源内容 | 工具 | 命令 |
+|--------|------|------|
+| PDF | `pdf_to_md.py` | `python3 tools/pdf_to_md.py <文件>` |
+| 网页 | `web_to_md.py` | `python3 tools/web_to_md.py <URL>` |
+| 微信/高防 | `web_to_md.cjs` | `node tools/web_to_md.cjs <URL>` |
 
-### 执行流程
+**禁止行为**：
+- ❌ 识别到 PDF/URL 后仅询问"是否需要转换"
+- ❌ 等待用户明确说"请转换"才处理
 
-```
-用户提供 PDF/URL
-       │
-       ▼
-   识别源内容类型
-       │
-       ├─ PDF → 立即运行 python3 tools/pdf_to_md.py <路径>
-       │
-       ├─ URL → 立即运行 python3 tools/web_to_md.py <URL>
-       │        （微信/高防站点用 node tools/web_to_md.cjs <URL>）
-       │
-       └─ Markdown → 使用 view_file 读取内容
-       │
-       ▼
-   创建项目文件夹（python3 tools/project_manager.py init）
-       │
-       ▼
-   询问模板选项（A 使用已有 / B 不使用 / C 生成新模板）
-       │
-       ▼
-   切换到 Strategist 角色，开始八项确认
-```
-
-### 禁止行为
-
-> ❌ **禁止**：用户提供 PDF/URL 后，仅回复"请问您是否需要我使用工具转换？"
-> ❌ **禁止**：用户提供 PDF/URL 后，仅解释工具的用法而不实际调用
-> ❌ **禁止**：等待用户明确说"请转换"才开始处理
-
-### 正确行为
-
-> ✅ **正确**：识别到 PDF/URL 后，立即调用工具转换，然后创建项目文件夹
-> ✅ **正确**：工具执行完成后，读取转换结果，询问模板选项，再进入八项确认流程
+**正确行为**：
+- ✅ 识别到 PDF/URL 后立即调用工具
+- ✅ 转换完成后创建项目 → 询问模板选项（A 使用 / B 不使用） → 进入策略师
 
 ---
 
@@ -289,102 +477,34 @@ python3 tools/svg_to_pptx.py <项目路径> -s final
 
 **策略师必须主动给出专业建议，而非仅提问。**
 
+**若图片方案包含「B) 用户提供」**：八项确认完成后、进入内容分析与大纲编制之前，必须运行 `python3 tools/analyze_images.py <项目路径>/images`，并在输出《设计规范与内容大纲》前填充图片资源清单。
+
 ### 2. SVG 技术约束（不可协商）
 
+> ⚠️ **详细规则**：各 Executor 角色文件中包含完整的代码示例和检查清单
+
+**基础规则**：
 - **viewBox**: 必须与画布尺寸一致
 - **背景**: 使用 `<rect>` 元素
-- **字体**: 使用《设计规范与内容大纲》中指定的字体方案（见 `docs/design_guidelines.md` 字体选择章节）
+- **字体**: 使用系统字体（见规范中的字体方案）
+- **换行**: 使用 `<tspan>` 手动换行
 
-#### 必须禁用的功能（黑名单）
+**禁用功能黑名单**（记忆口诀：PPT 只认基础形状 + 内联样式 + 系统字体）：
 
-| 分类            | 禁用项                                 | 说明                    |
-| --------------- | -------------------------------------- | ----------------------- |
-| **裁剪 / 遮罩** | ❌ `clipPath`                          | PPT 不支持 SVG 裁剪路径 |
-|                 | ❌ `mask`                              | PPT 不支持 SVG 遮罩     |
-| **样式系统**    | ❌ `<style>`                           | 内部样式表不兼容        |
-|                 | ❌ `class` / `id` 选择器               | 使用内联属性替代        |
-|                 | ❌ 外部 CSS                            | 禁止引用外部样式        |
-| **结构 / 嵌套** | ❌ `<foreignObject>`                   | 使用 `<tspan>` 手动换行 |
-|                 | ❌ `<symbol>` + `<use>` 复杂用法       | 简单 `<use>` 引用可用   |
-| **文本 / 字体** | ❌ `textPath`                          | 路径文本不兼容          |
-|                 | ❌ Web 字体（`@font-face`）            | 使用系统字体栈          |
-| **动画 / 交互** | ❌ SMIL 动画（`<animate*>` / `<set>`） | SVG 动画不导出          |
-|                 | ❌ `<script>` / 事件属性               | 禁止脚本和事件处理      |
-| **标记 / 箭头** | ❌ `marker` / `marker-end`             | PPT 不支持 SVG 标记     |
-|                 | ❌ `<marker>` + `<defs>`               | 使用 `<polygon>` 替代   |
-| **其他**        | ❌ `<iframe>`                          | 不应出现在 SVG 中       |
+`clipPath` | `mask` | `<style>` | `class/id` | 外部 CSS | `<foreignObject>` | `textPath` | `@font-face` | `<animate*>` | `<script>` | `marker-end` | `<iframe>`
 
-> 📌 **记忆口诀**：PPT 只认基础形状 + 内联样式 + 系统字体
+**PPT 兼容性**（记忆口诀：不认 rgba、不认组透明、不认图片透明、不认 marker）：
 
-### 3. PPT 兼容性规则（必须遵守）
+| ❌ 禁止 | ✅ 替代方案 |
+|--------|-------------|
+| `rgba()` 颜色 | `fill-opacity` / `stroke-opacity` |
+| `<g opacity>` 组透明 | 每个子元素单独设置 |
+| `<image opacity>` | 遮罩层叠加 |
+| `marker-end` 箭头 | `<polygon>` 三角形 |
 
-为确保 SVG 导出到 PowerPoint 后效果一致，**必须遵守以下透明度规则**：
+> 📖 **详细代码示例**：参见 `roles/Executor_*.md` 对应章节
 
-#### 禁止使用的写法
-
-| ❌ 禁止                        | ✅ 正确替代                                                      |
-| ------------------------------ | ---------------------------------------------------------------- |
-| `fill="rgba(255,255,255,0.1)"` | `fill="#FFFFFF" fill-opacity="0.1"`                              |
-| `stroke="rgba(0,0,0,0.5)"`     | `stroke="#000000" stroke-opacity="0.5"`                          |
-| `<g opacity="0.2">...</g>`     | 每个子元素单独设置 `opacity` / `fill-opacity` / `stroke-opacity` |
-| `<image ... opacity="0.3"/>`   | 图片后添加遮罩层 `<rect fill="背景色" opacity="0.7"/>`           |
-
-#### 透明度正确写法示例
-
-```xml
-<!-- ✅ 填充透明度 -->
-<rect fill="#FFFFFF" fill-opacity="0.15"/>
-
-<!-- ✅ 描边透明度 -->
-<circle stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.1"/>
-
-<!-- ✅ 整体透明度（简单元素可用） -->
-<rect fill="#2E5A8B" opacity="0.15"/>
-
-<!-- ❌ 禁止：组透明度 -->
-<g opacity="0.1">
-  <circle .../>
-  <line .../>
-</g>
-
-<!-- ✅ 正确：每个元素单独设置 -->
-<circle stroke="#FFF" stroke-opacity="0.1"/>
-<line stroke="#FFF" stroke-opacity="0.1"/>
-```
-
-#### 图片透明度遮罩方案
-
-```xml
-<!-- 图片原始透明度 0.35 → 遮罩层 opacity 0.65 -->
-<image href="bg.png" x="0" y="0" width="1280" height="720"/>
-<rect x="0" y="0" width="1280" height="720" fill="#背景色" opacity="0.65"/>
-```
-
-#### 箭头绘制方案
-
-PPT 不支持 SVG 的 `marker-end` 属性，需使用 `<polygon>` 三角形替代：
-
-```xml
-<!-- ❌ 禁止：使用 marker-end -->
-<defs>
-  <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-    <polygon points="0 0, 10 3.5, 0 7" fill="#6366F1"/>
-  </marker>
-</defs>
-<path d="M100 200 L200 200" marker-end="url(#arrow)"/>
-
-<!-- ✅ 正确：使用 line + polygon -->
-<line x1="100" y1="200" x2="195" y2="200" stroke="#6366F1" stroke-width="2"/>
-<polygon points="195,194 210,200 195,206" fill="#6366F1"/>
-
-<!-- ✅ 垂直箭头示例 -->
-<line x1="200" y1="100" x2="200" y2="145" stroke="#6366F1" stroke-width="2"/>
-<polygon points="194,145 200,160 206,145" fill="#6366F1"/>
-```
-
-> 📌 **记忆口诀**：PPT 不认 rgba、不认组透明、不认图片透明、不认 marker
-
-### 4. 画布格式
+### 3. 画布格式
 
 | 格式       | 尺寸      | viewBox         |
 | ---------- | --------- | --------------- |
@@ -396,6 +516,8 @@ PPT 不支持 SVG 的 `marker-end` 属性，需使用 `<polygon>` 三角形替�
 | 公众号头图 | 900×383   | `0 0 900 383`   |
 
 完整格式列表: [docs/canvas_formats.md](./docs/canvas_formats.md)
+
+---
 
 ## 常用命令
 
@@ -451,6 +573,8 @@ project/
 └── *.pptx         # 导出的 PPT 文件
 ```
 
+---
+
 ## 质量检查清单
 
 生成 SVG 时确保：
@@ -464,6 +588,8 @@ project/
 - [ ] **对比**: 建立清晰的视觉层级
 - [ ] **重复**: 同类元素风格一致
 - [ ] **亲密性**: 相关内容空间聚合
+
+---
 
 ## 源文档转换工具选择
 
@@ -494,6 +620,8 @@ project/
 
 > **策略**: 静态网页用 `web_to_md.py`，动态渲染或需登录的页面需手动处理。
 
+---
+
 ## 重要资源
 
 | 资源             | 路径                                    |
@@ -508,6 +636,8 @@ project/
 | 快速参考         | `docs/quick_reference.md`               |
 | 示例项目         | `examples/`                             |
 | 工具说明         | `tools/README.md`                       |
+
+---
 
 ## AI 代理重要提示
 
@@ -535,17 +665,18 @@ project/
 
 ### 流程要点
 
-- **项目文件夹必须在用户输入内容后立即创建**（第一步）
-- **创建项目后立即询问模板选项**（A 使用已有 / B 不使用 / C 生成新模板）— 这是流程步骤，非策略师职责
+- **项目文件夹必须在源材料转换完成后立即创建**
+- **创建项目后立即询问模板选项**（A 使用已有 / B 不使用）— 这是流程步骤，非策略师职责
 - **模板选项必须在策略师开始之前确认完成**，策略师需根据模板选项调整设计方案
 - 如用户选择 A（使用已有模板），需**分别复制**：图片资源拷贝到项目 `images/` 目录，其他文件（SVG、design_spec 等）拷贝到项目 `templates/` 目录（来源：用户自备/其他项目/示例库等）
-- 如用户选择 C（生成新模板），策略师先完成大纲后再调用模板设计师
+
 - **策略师的「八项确认」是强制要求，无论模板选项如何都不可跳过**
 - 策略师必须对八项确认问题**均给出专业建议**
 - 如选择 A（使用已有模板），策略师需参考模板的配色、布局、风格进行设计
 - 通用风格与咨询风格在规范格式上有本质区别
 - 图标使用方式需在八项确认中确认（Emoji / AI 生成 / 内置库 / 自定义）
 - 图片使用方式需在八项确认中确认（不使用 / 用户提供 / AI 生成 / 占位符）
+- 若图片方案包含「B) 用户提供」，策略师在八项确认后、内容分析前必须运行 `python3 tools/analyze_images.py <项目路径>/images` 并填充图片资源清单
 - **图片生成流程**：如果图片方式**包含**「C) AI 生成」（如 C、B+C、C+D），**必须**先切换到 Image_Generator 角色，阅读角色定义，完成图片生成后再进入 Executor 阶段
 - **Executor 两阶段**：SVG 页面生成（视觉构建）完成后，**必须**进入逻辑构建阶段生成演讲备注 `notes/total.md`，**禁止**跳过此步骤直接进入后处理
 

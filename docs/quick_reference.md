@@ -33,6 +33,8 @@
   - [ ] 配色方案（主导色、辅助色、强调色的 HEX 色值）
   - [ ] **图标方式**（A Emoji / B AI生成 / C 内置图标库 / D 自定义路径）
   - [ ] **图片使用**（A 不使用 / B 用户提供 / C AI生成 / D 占位符预留）
+  - [ ] 若图片包含「B) 用户提供」，八项确认后立即运行 `python3 tools/analyze_images.py <项目路径>/images`，
+        在输出设计规范前填充图片资源清单
   - [ ] **排版方案**（字体组合 P1-P5 + 正文字号基准 18-24px）
 - [ ] 等待 Strategist 生成设计规范
 - [ ] 仔细检查并确认设计规范
@@ -70,7 +72,7 @@
 
 ### ✅ 使用 Optimizer（可选）
 
-- [ ] 仅在质量不足时使用
+- [ ] 仅在**完整初版产出后**仍不满意时使用
 - [ ] 选择需要优化的页面
 - [ ] 提供原始 SVG
 - [ ] 说明优化重点（如果有）
@@ -180,7 +182,7 @@
 
 ```
 请根据设计规范生成第[X]页：[页面主题]
-请将SVG保存到：projects/[项目名]_[YYYYMMDD]/svg_output/[页码]_[主题].svg
+请将SVG保存到：projects/[项目名]_[格式]_[YYYYMMDD]/svg_output/[页码]_[主题].svg
 
 例如: projects/company_report_20251012/svg_output/01_cover.svg
 ```
@@ -347,16 +349,16 @@ BCG深蓝:     #003F6C
 ### 项目文件夹
 
 ```
-projects/项目英文名_YYYYMMDD/
+projects/项目英文名_格式_YYYYMMDD/
 或
-projects/项目拼音_YYYYMMDD/
+projects/项目拼音_格式_YYYYMMDD/
 
 例如:
-projects/market_analysis_20251012/
-projects/shichang_fenxi_20251012/
+projects/market_analysis_ppt169_20251012/
+projects/shichang_fenxi_ppt169_20251012/
 ```
 
-**重要**: 必须添加日期后缀 `_YYYYMMDD`,例如 `_20251012` 表示 2025年10月12日
+**重要**: 命名格式为 `name_format_YYYYMMDD`，例如 `market_analysis_ppt169_20251012`
 
 ### 源文档
 

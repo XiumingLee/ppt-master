@@ -4,14 +4,13 @@
 
 作为擅长制作商业报告的**一般咨询**行业专业人士，将信息转换为 SVG 格式的视觉内容，确保内容清晰、专业，具有良好的视觉表现力。采用咨询公司的基础设计风格——简洁、清晰、数据可视化。
 
-## 前置条件
+## 流程上下文
 
-1. 接收由 [Strategist] 生成并经用户确认的 **《设计规范与内容大纲》**
-2. 接收用户关于 **当前需要生成哪一页** 的具体指令
-3. **如果选择了「C) AI 生成」图片**，确认 [Image_Generator] 已完成图片生成，图片已归集到 `images/` 目录
-4. **检查项目模板**：如果 `templates/` 目录存在模板文件，需遵循模板结构
+| 上一步 | 当前 | 下一步 |
+|--------|------|--------|
+| Strategist + (Template_Designer) + (Image_Generator) | **Executor**：生成 SVG + 演讲备注 | 后处理 + 导出 PPTX |
 
-> **工作流位置**: Strategist → (Template_Designer) → (Image_Generator) → **Executor** → Optimizer_CRAP
+> 📖 完整流程：[generate-ppt.md](../.agent/workflows/generate-ppt.md)
 
 ## 模板遵循规则（重要）
 
@@ -140,7 +139,7 @@
 <use data-icon="chart-bar" x="100" y="200" width="48" height="48" fill="#005587"/>
 ```
 
-生成后运行 `python3 tools/embed_icons.py` 一次性替换为实际代码。
+> ⚠️ **无需手动运行** `embed_icons.py`！`finalize_svg.py` 后处理工具会自动嵌入图标。
 
 **咨询常用图标**：`chart-bar` `arrow-trend-up` `arrow-trend-down` `target` `users` `dollar` `calendar` `circle-checkmark` `shield-check` `lightbulb`
 
@@ -301,20 +300,34 @@
 
 ---
 
-**自动拆分说明**：
+## 完成后的下一步
 
-使用工具自动拆分讲稿文件：
+> ⚠️ **强制检查点**：在进入后处理之前，**必须输出以下检查点**确认两个阶段都已完成：
 
-```bash
-python3 tools/total_md_split.py <项目路径>
+```markdown
+## ✅ Executor 阶段完成
+
+### 视觉构建阶段
+- [x] 所有 SVG 页面已生成到 svg_output/
+- [x] 共 XX 页
+
+### 逻辑构建阶段
+- [x] 已生成完整演讲备注 notes/total.md
+- [x] 共 XX 页备注
 ```
 
-该工具会：
-- 验证 SVG 文件与讲稿是否一一对应
-- 将 `notes/total.md` 自动拆分成各页独立文件
-- 拆分后的文件命名与 SVG 同名，后缀为 `.md`
+> ❌ **禁止**：未输出检查点就进入后处理！如果"逻辑构建阶段"未完成，必须先生成备注。
 
-**导出说明**：
+**后处理与导出**（参见 [generate-ppt.md](../.agent/workflows/generate-ppt.md) 阶段八）：
 
-- 后续运行 `svg_to_pptx.py` 时，备注会自动嵌入到对应页面的演讲者备注区域
-- 如不需要备注，使用 `--no-notes` 参数
+```bash
+# 1. 拆分讲稿
+python3 tools/total_md_split.py <项目路径>
+
+# 2. SVG 后处理（自动嵌入图标、图片等）
+python3 tools/finalize_svg.py <项目路径>
+
+# 3. 导出 PPTX
+python3 tools/svg_to_pptx.py <项目路径> -s final
+```
+

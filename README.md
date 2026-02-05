@@ -131,13 +131,13 @@ AI（Strategist 角色）：好的，在开始之前我需要完成八项确认.
     ↓
 [源内容转换] → pdf_to_md.py / web_to_md.py
     ↓
-[创建项目] → project_manager.py init
+[创建项目] → project_manager.py init <项目名> --format <格式>
     ↓
-[模板选项] A) 使用已有模板 B) 不使用模板 C) 生成新模板
+[模板选项] A) 使用已有模板 B) 不使用模板
+    ↓
+[需要新模板？] → 使用 /create-template 工作流单独创建
     ↓
 [Strategist] 策略师 - 八项确认与设计规范
-    ↓
-[Template_Designer] 模板设计师（仅选项 C 触发）
     ↓
 [Image_Generator] 图片生成师（当选择 AI 生成时）
     ↓
@@ -145,14 +145,18 @@ AI（Strategist 角色）：好的，在开始之前我需要完成八项确认.
     ├── 视觉构建阶段：连续生成所有 SVG 页面 → svg_output/
     └── 逻辑构建阶段：生成完整讲稿 → notes/total.md
     ↓
-[Optimizer_CRAP] 优化师（可选）
-    ↓
 [后处理] → total_md_split.py（拆分讲稿）→ finalize_svg.py → svg_to_pptx.py
     ↓
 输出: SVG + PPTX（自动嵌入讲稿）
+    ↓
+[Optimizer_CRAP] 优化师（可选，初版后不满意再用）
+    ↓
+如有优化：重新运行后处理与导出
 ```
 
 > 📖 详细工作流程请参阅 [工作流教程](./docs/workflow_tutorial.md) 和 [角色定义](./roles/README.md)
+
+> 💡 **PPT 编辑提示**：导出的 PPTX 页面为 SVG 格式。若需编辑内容，请在 PowerPoint 中选中页面，右键选择 **"转换为形状"** (Convert to Shape)。此功能需要 **Office 2016** 或更高版本。
 
 ---
 
@@ -196,7 +200,7 @@ ppt-master/
 <summary><b>Q: 生成的 SVG 文件如何使用？</b></summary>
 
 - 直接在浏览器中打开查看
-- 使用 `svg_to_pptx.py` 导出为 PowerPoint
+- 使用 `svg_to_pptx.py` 导出为 PowerPoint（需在 PPT 中"转换为形状"以编辑，要求 Office 2016+）
 - 嵌入到 HTML 页面或使用设计工具编辑
 
 </details>
