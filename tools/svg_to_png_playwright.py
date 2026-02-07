@@ -127,7 +127,24 @@ class SvgToPngConverter:
             with open(svg_path, 'r', encoding='utf-8') as f:
                 svg_content = f.read()
 
-            # 创建 HTML 页面包含 SVG
+            # 从 SVG 中提取 viewBox 尺寸
+            import re
+            viewbox_match = re.search(r'viewBox=["\']([^"\']+)["\']', svg_content)
+            if viewbox_match:
+                viewbox_values = viewbox_match.group(1).split()
+                if len(viewbox_values) == 4:
+                    svg_width = float(viewbox_values[2])
+                    svg_height = float(viewbox_values[3])
+                else:
+                    # 如果无法解析 viewBox，使用默认值
+                    svg_width = 750
+                    svg_height = 1000
+            else:
+                # 如果没有 viewBox，使用默认值
+                svg_width = 750
+                svg_height = 1000
+
+            # 创建 HTML 页面包含 SVG（设置明确的 width 和 height）
             html_content = f"""
             <!DOCTYPE html>
             <html>
@@ -143,6 +160,8 @@ class SvgToPngConverter:
                     }}
                     svg {{
                         display: block;
+                        width: {svg_width}px;
+                        height: {svg_height}px;
                     }}
                 </style>
             </head>
@@ -158,27 +177,27 @@ class SvgToPngConverter:
             # 等待 SVG 加载
             self.page.wait_for_selector('svg', timeout=5000)
 
-            # 获取 SVG 尺寸
-            svg_element = self.page.query_selector('svg')
-            bbox = svg_element.bounding_box()
+            # 使用从 viewBox 读取的尺寸
+            width = svg_width
+            height = svg_height
 
-            if not bbox:
-                raise Exception("无法获取 SVG 尺寸")
+            # 设置视口大小（应用缩放）
+            viewport_width = int(width * self.scale)
+            viewport_height = int(height * self.scale)
 
-            width = bbox['width']
-            height = bbox['height']
-
-            # 设置视口大小
             self.page.set_viewport_size({
-                'width': int(width * self.scale),
-                'height': int(height * self.scale)
+                'width': viewport_width,
+                'height': viewport_height
             })
 
-            # 截图
+            # 获取 SVG 元素
+            svg_element = self.page.query_selector('svg')
+
+            # 截图（使用 css 模式，避免设备像素比放大）
             svg_element.screenshot(
                 path=str(png_path),
                 type='png',
-                scale='device'
+                scale='css'
             )
 
             self.success_count += 1
