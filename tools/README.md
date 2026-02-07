@@ -1369,6 +1369,96 @@ pip install python-pptx
 
 ---
 
-_最后更新: 2025-12-20_
+### 15. svg_to_png_playwright.py — SVG 转 PNG 工具（Playwright）
 
-_gemini_watermark_remover.py 文档更新: 2025-12-20_
+使用 Playwright 浏览器引擎将 SVG 文件转换为 PNG 图片，完美支持 emoji 和所有样式。
+
+**功能**:
+
+- 使用真实浏览器引擎渲染 SVG
+- 完美支持 emoji 图标（无需系统字体配置）
+- 保留所有 SVG 样式和效果
+- 支持单文件和批量转换
+- 支持自定义缩放倍数
+- 支持递归处理子目录
+
+**用法**:
+
+```bash
+# 转换单个文件
+python3 tools/svg_to_png_playwright.py input.svg
+
+# 转换单个文件并指定输出路径
+python3 tools/svg_to_png_playwright.py input.svg output.png
+
+# 批量转换目录
+python3 tools/svg_to_png_playwright.py ./svg_output
+
+# 批量转换并指定输出目录
+python3 tools/svg_to_png_playwright.py ./svg_output ./png_output
+
+# 指定缩放倍数（默认1倍）
+python3 tools/svg_to_png_playwright.py ./svg_output ./png_output --scale 2
+
+# 不递归处理子目录
+python3 tools/svg_to_png_playwright.py ./svg_output --no-recursive
+```
+
+**参数说明**:
+
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `input_path` | 输入的 SVG 文件或目录 | 必需 |
+| `output_path` | 输出的 PNG 文件或目录 | 可选 |
+| `--scale` | 缩放倍数 | 1.0 |
+| `--no-recursive` | 不递归处理子目录 | 递归开启 |
+
+**示例**:
+
+```bash
+# 转换项目的 SVG 文件
+python3 tools/svg_to_png_playwright.py projects/my_project_ppt169_20251116/svg_output
+
+# 转换到指定目录，2倍缩放
+python3 tools/svg_to_png_playwright.py projects/my_project/svg_output projects/my_project/png_output --scale 2
+
+# 转换单个文件
+python3 tools/svg_to_png_playwright.py slide_01.svg slide_01.png
+```
+
+**依赖**:
+
+```bash
+pip install playwright
+playwright install chromium
+```
+
+**为什么选择 Playwright**:
+
+| 方案 | Emoji 支持 | 速度 | 依赖 |
+|------|-----------|------|------|
+| cairosvg | ❌ 不支持 | 最快 | 轻量，需系统字体 |
+| **Playwright** | ✅ 完美支持 | 中等 | 需浏览器 |
+| Puppeteer (Node.js) | ✅ 完美支持 | 较慢 | 需 Node.js |
+
+**优势**:
+
+- 使用浏览器引擎渲染，emoji 显示完美
+- 无需配置系统字体
+- 支持所有 SVG 特性和样式
+- 速度比 Puppeteer 快
+- 纯 Python 实现，无需 Node.js
+
+**注意**:
+
+- 首次运行需要下载 Chromium 浏览器（约 150MB）
+- 转换速度比 cairosvg 慢，但比 Puppeteer 快
+- 适合需要完美渲染 emoji 和复杂样式的场景
+
+---
+
+_最后更新: 2026-02-07_
+
+_svg_to_png_playwright.py 文档添加: 2026-02-07_
+
+_gemini_watermark_remover.py ��档更新: 2025-12-20_
