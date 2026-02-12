@@ -129,6 +129,9 @@
 | 朋友圈   | 1:1          | 1080×1080              |
 | Story    | 9:16         | 1080×1920              |
 
+> ⚠️ **Nano Banana 工具支持的宽高比**（生成提示词时必须使用以下格式）：
+> `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
+
 ---
 
 ## 3. 图片类型分类与处理
@@ -195,6 +198,7 @@ clean negative space in center for text overlay,
 16:9 aspect ratio, high resolution, professional presentation background
 ```
 
+
 **负面提示词**: `text, letters, watermark, faces, busy patterns, high contrast details`
 
 ---
@@ -228,6 +232,7 @@ natural soft lighting, slightly blurred office background,
 color grading with cool blue tones (#1E3A5F),
 high quality, sharp focus, 8K resolution, diverse professional team
 ```
+
 
 **负面提示词**: `watermark, text overlay, artificial, CGI, illustration, cartoon, distorted faces`
 
@@ -264,6 +269,7 @@ color palette: blue (#4A90D9), coral (#FF6B6B), white,
 white background, professional business illustration
 ```
 
+
 **负面提示词**: `realistic, photography, 3D render, complex textures, gradients, watermark`
 
 ---
@@ -299,6 +305,7 @@ blue (#4A90D9) and gray (#6B7280) color scheme,
 white background, clear labels, suitable for academic publication
 ```
 
+
 **负面提示词**: `cluttered, messy, overlapping elements, dark background, realistic, photography`
 
 ---
@@ -331,6 +338,7 @@ Abstract geometric corner decoration with flowing lines,
 minimalist style, gold (#D4AF37) on transparent background,
 subtle and elegant, suitable for presentation slide corners
 ```
+
 
 **负面提示词**: `busy, cluttered, high contrast, distracting, photorealistic`
 
@@ -369,20 +377,51 @@ subtle and elegant, suitable for presentation slide corners
   PYTHONIOENCODING=utf-8 python tools/text_to_image_bailian.py "现代科技感抽象背景，深蓝渐变" -s "1280*720" -o projects/项目名/images/cover_bg.png
   ```
 
-**方式二：手动生成**（常用方式）
+**方式二：使用 Nano Banana 命令行工具** ⭐ 推荐
 
-- 提示词已保存在 `images/image_prompts.md`，告知用户文件位置
-- 用户自行到 AI 平台（Midjourney、DALL-E、Stable Diffusion、文心一格、通义万相）生成
-- 用户将生成的图片放入 `项目/images/` 目录
+- 使用本项目工具 `tools/nano_banana_gen.py` 直接生成高分辨率图片
+- **首选调用方式**：始终优先使用 `tools/nano_banana_gen.py`
+- **配置方式**：仅使用环境变量（不使用 JSON 配置）
+- 必需环境变量：`GEMINI_API_KEY`
+- 可选环境变量：`GEMINI_BASE_URL`
+- 命令格式:
+  ```bash
+  python3 tools/nano_banana_gen.py "你的提示词" --aspect_ratio 16:9 --image_size 4K --output 项目/images --filename cover_bg
+  ```
+- **生成节奏控制（强制）**：
+- 每次只执行一个生成命令，等待图片返回并确认文件落盘后，再执行下一条
+- 建议每张间隔 2-5 秒，避免并发或过快提交导致失败
+- 如出现失败/无输出，先停止队列，检查环境变量与输出目录，再继续
+- **完整参数列表**:
 
-**方式三：使用 Gemini 生成**（推荐高分辨率）
+  | 参数 | 简写 | 说明 | 默认值 |
+    |------|------|------|--------|
+  | `prompt` | - | 正向提示词（位置参数） | `Nano Banana` |
+  | `--negative_prompt` | `-n` | 负面提示词，指定需要排除的元素 | 无 |
+  | `--aspect_ratio` | - | 图片宽高比 | `1:1` |
+  | `--image_size` | - | 图片尺寸 (`1K`, `2K`, `4K`) | `4K` |
+  | `--output` | `-o` | 输出目录 | 当前目录 |
+  | `--filename` | `-f` | 指定输出文件名（不含扩展名） | 自动命名 |
+
+- 支持的宽高比: `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
+- 支持的尺寸: `1K`, `2K`, `4K`（默认）
+- 使用 `--output` 或 `-o` 参数指定输出目录，图片将保存到与 `image_prompts.md` 相同的 `images/` 目录
+
+
+**方式三：使用 Gemini 网页版**
 
 - 在 [Gemini](https://gemini.google.com/) 中生成图片
 - 选择 **Download full size** 下载高分辨率版本
 - ⚠️ **水印处理**: Gemini 生成的图片右下角有星星水印，使用以下工具去除：
-  - 本项目工具: `python3 tools/gemini_watermark_remover.py <图片路径>`
-  - 或使用 [gemini-watermark-remover](https://github.com/journey-ad/gemini-watermark-remover)
+    - 本项目工具: `python3 tools/gemini_watermark_remover.py <图片路径>`
+    - 或使用 [gemini-watermark-remover](https://github.com/journey-ad/gemini-watermark-remover)
 - 将处理后的图片放入 `项目/images/` 目录
+
+**方式四：手动生成**（使用其他 AI 平台）
+
+- 提示词已保存在 `images/image_prompts.md`，告知用户文件位置
+- 用户自行到 AI 平台（Midjourney、DALL-E、Stable Diffusion、文心一格、通义万相）生成
+- 用户将生成的图片放入 `项目/images/` 目录
 
 ### 4.4 验证阶段
 
@@ -438,13 +477,6 @@ high quality 4K, professional presentation background
 
 ```
 
-**负面提示词 (Negative Prompt)**:
-```
-
-text, letters, watermark, faces, busy patterns, high contrast details, low quality
-
-```
-
 **图片描述 (Alt Text)**:
 > 现代科技感抽象背景，深蓝色渐变配合数字波浪和粒子效果
 
@@ -485,6 +517,9 @@ text, letters, watermark, faces, busy patterns, high contrast details, low quali
 
 **下一步**: 切换到 Executor 角色开始生成 SVG
 ```
+
+---
+
 
 ---
 

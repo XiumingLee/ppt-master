@@ -49,6 +49,7 @@ graph TB
         F2[analyze_images.py]
         F3[svg_position_calculator.py]
         F4[config.py]
+        F5[nano_banana_gen.py]
     end
     
     A1 --> B1
@@ -90,6 +91,7 @@ graph TB
 | **导出** | `svg_to_pptx.py` | SVG 转 PowerPoint |
 | **讲稿处理** | `total_md_split.py` | 讲稿拆分工具 |
 | **质量检查** | `svg_quality_checker.py`, `batch_validate.py` | 验证 SVG 规范 |
+| **素材生成** | `nano_banana_gen.py` | 利用 Gemini Nano 生成高品质图片 |
 | **辅助** | `config.py`, `analyze_images.py`, `rotate_images.py` | 配置和图片处理 |
 
 ---
@@ -225,78 +227,7 @@ Node.js:
 
 ---
 
-### 0.6. text_to_image_bailian.py — 文本转图片工具（阿里云百炼）
-
-使用阿里云百炼 API 根据文本描述生成图片，支持多种尺寸规格。
-
-**功能**:
-
-- 调用阿里云百炼文本生成图片 API
-- 支持多种尺寸: 1024×1024 (1:1)、1280×720 (16:9)、720×1280 (9:16)
-- 自动下载并保存图片到指定目录
-- 支持环境变量配置 API Key
-
-**用法**:
-
-```bash
-# 生成方形图片 (1024×1024)
-python3 tools/text_to_image_bailian.py "现代科技感抽象背景，深蓝渐变" -o images/bg.png
-
-# 生成 16:9 横版图片 (1280×720)
-python3 tools/text_to_image_bailian.py "团队协作场景插图" -s "1280*720" -o images/team.png
-
-# 生成 9:16 竖版图片 (720×1280)
-python3 tools/text_to_image_bailian.py "产品展示图" -s "720*1280" -o images/product.png
-
-# 静默模式
-python3 tools/text_to_image_bailian.py "背景图" -o images/bg.png -q
-```
-
-**支持的尺寸**:
-
-| 尺寸 | 宽高比 | 适用场景 |
-|------|--------|----------|
-| 1280*1280 | 1:1 | 方形图片、朋友圈、小红书封面（推荐） |
-| 1024*1024 | 1:1 | 方形图片 |
-| 1280*720 | 16:9 | PPT 背景、横版配图 |
-| 1696*960 | 16:9 | PPT 背景、横版配图（高分辨率） |
-| 720*1280 | 9:16 | Story、竖版海报 |
-| 960*1696 | 9:16 | Story、竖版海报（高分辨率） |
-| 1104*1472 | 3:4 | 小红书竖版 |
-| 1472*1104 | 4:3 | PPT 4:3 背景 |
-
-**环境变量配置**:
-
-Windows (CMD):
-```cmd
-set BAILIAN_KEY=your_api_key_here
-```
-
-Windows (PowerShell):
-```powershell
-$env:BAILIAN_KEY="your_api_key_here"
-```
-
-Linux/Mac:
-```bash
-export BAILIAN_KEY='your_api_key_here'
-```
-
-**依赖**:
-
-```bash
-pip install dashscope
-```
-
-**获取 API Key**:
-
-1. 访问 [阿里云百炼控制台](https://bailian.console.aliyun.com/)
-2. 开通文本生成图片服务
-3. 获取 API Key 并设置为环境变量 `BAILIAN_KEY`
-
----
-
-### 0.7. rotate_images.py — 图片方向修正工具
+### 0.6. rotate_images.py — 图片方向修正工具
 
 处理从网页下载的图片 EXIF 方向信息丢失或错误的专用工具。
 
@@ -1240,7 +1171,66 @@ pip install Pillow numpy
 
 ---
 
-### 14. embed_icons.py — SVG 图标嵌入工具
+### 14. nano_banana_gen.py — Nano Banana 图像生成工具
+
+利用 Google GenAI API 调用 Gemini 模型生成高质量图片素材。
+
+**功能**:
+
+- **高分辨率**: 支持最高 4K 分辨率生成
+- **自定义宽高比**: 支持 `16:9`, `4:3`, `1:1`, `9:16` 等主流比例
+- **提示词工程**: 内置负面提示词支持，自动优化生成质量
+- **自动保存**: 自动根据提示词命名并保存为 PNG 格式
+
+**用法**:
+
+```bash
+# 生成默认图片
+python3 tools/nano_banana_gen.py "A modern futuristic workspace"
+
+# 指定宽高比和尺寸
+python3 tools/nano_banana_gen.py "Abstract tech background" --aspect_ratio 16:9 --image_size 4K
+
+# 指定输出目录
+python3 tools/nano_banana_gen.py "Concept car" -o projects/demo/images
+
+# 使用负面提示词
+python3 tools/nano_banana_gen.py "Beautiful landscape" -n "low quality, blurry, watermark"
+```
+
+**参数说明**:
+
+| 参数 | 缩写 | 默认值 | 可选值 |
+|------|------|--------|--------|
+| `prompt` | - | Nano Banana | 提示词字符串 |
+| `--negative_prompt` | `-n` | None | 负面提示词 |
+| `--aspect_ratio` | - | `1:1` | `1:1`, `16:9`, `4:3`, `3:2`, `9:16`, `21:9` 等 |
+| `--image_size` | - | `4K` | `1K`, `2K`, `4K` |
+| `--output` | `-o` | 当前工作目录 | 图片保存目录 |
+
+**环境变量配置**:
+
+使用前需设置环境变量：
+
+```bash
+# 必需：Gemini API Key
+export GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+
+# 可选：自定义 API 端点（用于代理服务）
+export GEMINI_BASE_URL="YOUR_API_BASE_URL"
+```
+
+> 💡 **提示**: 可将环境变量添加到 `~/.zshrc` 或 `~/.bashrc` 中永久生效。
+
+**依赖**:
+
+```bash
+pip install google-genai
+```
+
+---
+
+### 15. embed_icons.py — SVG 图标嵌入工具
 
 将 SVG 文件中的图标占位符 (`<use ...>`) 替换为实际的图标路径数据，实现图标的“零依赖”嵌入。
 
@@ -1459,6 +1449,7 @@ playwright install chromium
 
 _最后更新: 2026-02-07_
 
-_svg_to_png_playwright.py 文档添加: 2026-02-07_
 
-_gemini_watermark_remover.py ��档更新: 2025-12-20_
+_nano_banana_gen.py 文档更新: 2026-02-03_
+
+_gemini_watermark_remover.py 文档更新: 2025-12-20_
