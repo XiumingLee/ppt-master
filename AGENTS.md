@@ -84,6 +84,8 @@ python3 tools/project_manager.py init <项目名称> --format <格式>
 
 ### A) 使用已有模板
 
+若选择 A) 使用已有模板，先查询 `templates/layouts/layouts_index.json` 确认可用模板、适用场景和资源文件，再决定复制哪一套模板。
+
 **情况 1：模板在 repo 内**（如 `templates/layouts/` 下）
 
 检查模板目录内容，按类型分别复制：
@@ -194,7 +196,7 @@ cp templates/layouts/<模板名>/*.jpeg <项目路径>/images/ 2>/dev/null || tr
    - 需先配置环境变量 `GEMINI_API_KEY`
      // turbo
      ```bash
-     python3 tools/nano_banana_gen.py "现代科技感背景" --aspect_ratio 16:9 --image_size 4K -o <项目路径>/images
+     python3 tools/nano_banana_gen.py "现代科技感背景" --aspect_ratio 16:9 --image_size 1K -o <项目路径>/images
      ```
    - 详细用法参见 `tools/README.md` 和 `roles/Image_Generator.md`
 
