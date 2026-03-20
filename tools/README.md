@@ -294,12 +294,20 @@ python3 tools/project_utils.py <project_path>
 # 初始化新项目
 python3 tools/project_manager.py init <project_name> --format ppt169
 
+# 将原始材料和标准化 Markdown 收进项目目录
+python3 tools/project_manager.py import-sources <project_path> <source1> [<source2> ...]
+
 # 验证项目结构
 python3 tools/project_manager.py validate <project_path>
 
 # 查看项目信息
 python3 tools/project_manager.py info <project_path>
 ```
+
+说明：
+- 工作空间外文件默认复制到 `sources/`
+- 使用 `--move` 时，工作空间外文件改为移动到 `sources/`
+- 如果文件已位于当前工作空间内，会直接移动到 `sources/`
 
 **支持的画布格式**:
 
