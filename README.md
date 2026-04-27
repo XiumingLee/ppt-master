@@ -1,268 +1,303 @@
-# PPT Master — AI 生成可编辑的精美演示文稿，支持任意文档输入
+# PPT Master — AI generates natively editable PPTX from any document
 
-[![Version](https://img.shields.io/badge/version-v1.1.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)
+[![Version](https://img.shields.io/badge/version-v2.3.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/hugohe3/ppt-master.svg)](https://github.com/hugohe3/ppt-master/stargazers)
+[![AtomGit stars](https://atomgit.com/hugohe3/ppt-master/star/badge.svg)](https://atomgit.com/hugohe3/ppt-master)
 
-[English](./README_EN.md) | 中文
+English | [中文](./README_CN.md)
 
-丢进一份 PDF、网址或 Markdown，AI 自动生成**可在 PowerPoint 中直接编辑**的精美演示文稿。支持 PPT 16:9、小红书、朋友圈等 10+ 种格式。
+<p align="center">
+  <a href="https://hugohe3.github.io/ppt-master/"><strong>Live Demo</strong></a> ·
+  <a href="https://www.hehugo.com/"><strong>About Hugo He</strong></a> ·
+  <a href="./examples/"><strong>Examples</strong></a> ·
+  <a href="./docs/faq.md"><strong>FAQ</strong></a> ·
+  <a href="mailto:heyug3@gmail.com"><strong>Contact</strong></a>
+</p>
 
-> **在线示例**：[GitHub Pages 在线预览](https://hugohe3.github.io/ppt-master/) — 查看实际生成效果
-
-> **视频演示**：[YouTube](https://www.youtube.com/watch?v=jM2fHmvMwx0) | [Bilibili](https://www.bilibili.com/video/BV1iUmQBtEGH/)
-
----
-
-## 🎴 精选示例
-
-> **示例库**: [`examples/`](./examples/) · **15 个项目** · **229 页**
-
-| 类别            | 项目 | 页数 | 特色 |
-| --------------- | ---- | :--: | ---- |
-| 🏢 **咨询风格** | [心理治疗中的依恋](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E9%A1%B6%E7%BA%A7%E5%92%A8%E8%AF%A2%E9%A3%8E_%E5%BF%83%E7%90%86%E6%B2%BB%E7%96%97%E4%B8%AD%E7%9A%84%E4%BE%9D%E6%81%8B) |  32  | 顶级咨询风格，最大规模示例 |
-|                 | [构建有效AI代理](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E9%A1%B6%E7%BA%A7%E5%92%A8%E8%AF%A2%E9%A3%8E_%E6%9E%84%E5%BB%BA%E6%9C%89%E6%95%88AI%E4%BB%A3%E7%90%86_Anthropic) |  15  | Anthropic 工程博客，AI Agent 架构 |
-|                 | [重庆市区域报告](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E9%A1%B6%E7%BA%A7%E5%92%A8%E8%AF%A2%E9%A3%8E_%E9%87%8D%E5%BA%86%E5%B8%82%E5%8C%BA%E5%9F%9F%E6%8A%A5%E5%91%8A_ppt169_20251213) |  20  | 区域财政分析，企业预警通数据 |
-|                 | [甘孜州经济财政分析](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E9%A1%B6%E7%BA%A7%E5%92%A8%E8%AF%A2%E9%A3%8E_%E7%94%98%E5%AD%9C%E5%B7%9E%E7%BB%8F%E6%B5%8E%E8%B4%A2%E6%94%BF%E5%88%86%E6%9E%90) |  17  | 政务财政分析，藏区文化元素 |
-| 🎨 **通用灵活** | [Debug 六步法](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E9%80%9A%E7%94%A8%E7%81%B5%E6%B4%BB%2B%E4%BB%A3%E7%A0%81_debug%E5%85%AD%E6%AD%A5%E6%B3%95) |  10  | 深色科技风格 |
-|                 | [重庆大学论文格式](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E9%80%9A%E7%94%A8%E7%81%B5%E6%B4%BB%2B%E5%AD%A6%E6%9C%AF_%E9%87%8D%E5%BA%86%E5%A4%A7%E5%AD%A6%E8%AE%BA%E6%96%87%E6%A0%BC%E5%BC%8F%E6%A0%87%E5%87%86) |  11  | 学术规范指南 |
-| ✨ **创意风格** | [地山谦卦深度研究](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E6%98%93%E7%90%86%E9%A3%8E_%E5%9C%B0%E5%B1%B1%E8%B0%A6%E5%8D%A6%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6) |  20  | 易经本体美学，阴阳爻变设计 |
-|                 | [金刚经第一品研究](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E7%A6%85%E6%84%8F%E9%A3%8E_%E9%87%91%E5%88%9A%E7%BB%8F%E7%AC%AC%E4%B8%80%E5%93%81%E7%A0%94%E7%A9%B6) |  15  | 禅意学术，水墨留白 |
-|                 | [Git 入门指南](https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_%E5%83%8F%E7%B4%A0%E9%A3%8E_git_introduction) |  10  | 像素复古游戏风 |
-
-📖 [查看完整示例文档](./examples/README.md)
+> **Official channels —** this project is published **only** on [GitHub](https://github.com/hugohe3/ppt-master) (primary) and [AtomGit](https://atomgit.com/hugohe3/ppt-master) (auto-synced mirror). Redistributions on any other platform are unofficial and not maintained by the author. Licensed under MIT — attribution required.
 
 ---
 
-## 🚀 快速开始
+<p align="center">
+  <img src="docs/assets/hero-liziqi-colors.gif" alt="Demo: generating a 12-page PPT from a WeChat article with Claude Opus 4.7" width="860" />
+</p>
 
-### 1. 配置环境
+<p align="center">
+  <sub>↑ A 12-page natively editable deck, generated end-to-end from <a href="https://mp.weixin.qq.com/s/6ZmBl0uE3sOtD8TJcHfNAw">a single WeChat article URL</a> using Claude Opus 4.7. No manual design. No image export. Every shape, text box, and chart is clickable and editable in PowerPoint.</sub>
+</p>
 
-#### Python 环境（必需）
+<p align="center">
+  <sub>🛡️ New: <a href="https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_general_dark_tech_claude_code_auto_mode">10-page dark-tech deck</a> generated from <a href="https://www.anthropic.com/engineering/claude-code-auto-mode">Anthropic's Claude Code Auto Mode engineering blog</a> — see it in the <a href="./examples/ppt169_general_dark_tech_claude_code_auto_mode/">examples</a>.</sub>
+</p>
 
-本项目需要 **Python 3.8+**，用于运行 PDF 转换、SVG 后处理、PPTX 导出等工具。
+---
 
-| 平台 | 推荐安装方式 |
-|------|------------|
-| **macOS** | 使用 [Homebrew](https://brew.sh/)：`brew install python` |
-| **Windows** | 从 [Python 官网](https://www.python.org/downloads/) 下载安装包 |
-| **Linux** | 使用系统包管理器：`sudo apt install python3 python3-pip`（Ubuntu/Debian） |
+Drop in a PDF, DOCX, URL, or Markdown — get back a **natively editable PowerPoint** with real shapes, real text boxes, and real charts. Not images. Click anything and edit it.
 
-> 💡 **验证安装**：运行 `python3 --version` 确认版本 ≥ 3.8
+> **How it works** — PPT Master is a workflow (a "skill") that works inside AI IDEs like Claude Code, Cursor, VS Code + Copilot, or Codebuddy. You chat with the AI — "make a deck from this PDF" — and it follows the workflow to produce a real editable `.pptx` on your computer. No coding on your side; the IDE is just where the conversation happens.
+>
+> **What you'll do**: install Python, install an AI IDE, drop in your material. First-time setup is about 15 minutes. Each deck takes ~10–20 minutes of back-and-forth with the AI.
 
-#### Node.js 环境（可选）
+**[Why PPT Master?](./docs/why-ppt-master.md)**
 
-如需使用 `web_to_md.cjs` 工具（用于微信公众号等高防站点的网页转换），需安装 Node.js。
+There's no shortage of AI presentation tools — what's missing is one where the output is **actually usable as a real PowerPoint file**. I build presentations every day, but most tools export images or web screenshots: they look nice but you can't edit anything. Others produce bare-bones text boxes and bullet lists. And they all want a monthly subscription, upload your files to their servers, and lock you into their platform.
 
-| 平台 | 推荐安装方式 |
-|------|------------|
-| **macOS** | 使用 [Homebrew](https://brew.sh/)：`brew install node` |
-| **Windows** | 从 [Node.js 官网](https://nodejs.org/) 下载 LTS 版本安装包 |
-| **Linux** | 使用 [NodeSource](https://github.com/nodesource/distributions)：`curl -fsSL https://deb.nodesource.com/setup_lts.x \| sudo -E bash - && sudo apt-get install -y nodejs` |
+PPT Master is different:
 
-> 💡 **验证安装**：运行 `node --version` 确认版本 ≥ 18
+- **Real PowerPoint** — if a file can't be opened and edited in PowerPoint, it shouldn't be called a PPT. Every element PPT Master outputs is directly clickable and editable
+- **Transparent, predictable cost** — the tool is free and open source; the only cost is your own AI editor, and you know exactly what you're paying. As low as **$0.08/deck** with VS Code Copilot
+- **Data stays local** — your files shouldn't have to be uploaded to someone else's server just to make a presentation. Apart from AI model communication, the entire pipeline runs on your machine
+- **No platform lock-in** — your workflow shouldn't be held hostage by any single company. Works with Claude Code, Cursor, VS Code Copilot, and more; supports Claude, GPT, Gemini, Kimi, and other models
 
-### 2. 克隆仓库并安装依赖
+**What category this tool belongs to**
+
+AI presentation tools roughly fall into four categories. PPT Master only does the last one:
+
+| Category | Output | Editable element-by-element in PowerPoint? |
+|---|---|:---:|
+| Template fill-in | PPTX built from a fixed template | Partially — limited by the template |
+| Image-based | One large image per slide, packed into PPTX | ❌ each slide is a picture |
+| HTML presentation | Web-based deck | ❌ not a PPTX |
+| **Native editable (PPT Master)** | **Real DrawingML shapes, text boxes, charts** | ✅ click any element to edit |
+
+If all you need is a deck that "looks usable," the first three are faster and cheaper. **PPT Master is for people who need to keep editing the deck in PowerPoint afterward** — incorporating it into formal materials, pitch decks, reports, etc. That positioning means each deck costs more to generate than template fill-in tools — not because the pipeline is unoptimized, but because the output itself is a more expensive artifact.
+
+**[See live examples →](https://hugohe3.github.io/ppt-master/)** · [`examples/`](./examples/) — 22 projects, 309 pages
+
+## Gallery
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/assets/screenshots/preview_magazine_garden.png" alt="Magazine style — Garden building guide" /><br/><sub><b>Magazine</b> — warm earthy tones, photo-rich layout</sub></td>
+    <td align="center"><img src="docs/assets/screenshots/preview_academic_medical.png" alt="Academic style — Medical image segmentation research" /><br/><sub><b>Academic</b> — structured research format, data-driven</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/assets/screenshots/preview_dark_art_mv.png" alt="Dark art style — Music video analysis" /><br/><sub><b>Dark Art</b> — cinematic dark background, gallery aesthetic</sub></td>
+    <td align="center"><img src="docs/assets/screenshots/preview_nature_wildlife.png" alt="Nature style — Wildlife wetland documentary" /><br/><sub><b>Nature Documentary</b> — immersive photography, minimal UI</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/assets/screenshots/preview_tech_claude_plans.png" alt="Tech style — Claude AI subscription plans" /><br/><sub><b>Tech / SaaS</b> — clean white cards, pricing table layout</sub></td>
+    <td align="center"><img src="docs/assets/screenshots/preview_launch_xiaomi.png" alt="Product launch style — Xiaomi spring release" /><br/><sub><b>Product Launch</b> — high contrast, bold specs highlight</sub></td>
+  </tr>
+</table>
+
+---
+
+## Built by Hugo He
+
+I'm a finance professional (CPA · CPV · Consulting Engineer (Investment)) who got tired of spending hours on presentations that could be automated. So I built this.
+
+PPT Master started from a simple frustration: existing AI slide tools export images, not editable shapes. As someone who reviews and edits hundreds of slides in investment and consulting work, that was unacceptable. I wanted real DrawingML — click on any element and change it, just like you built it by hand.
+
+This project is my attempt to bridge the gap between **domain expertise** and **product engineering** — turning a complex professional pain point into an open-source tool that anyone can use.
+
+🌐 [Personal website](https://www.hehugo.com/) · 📧 [heyug3@gmail.com](mailto:heyug3@gmail.com) · 🐙 [@hugohe3](https://github.com/hugohe3)
+
+---
+
+## Support This Project
+
+PPT Master is built and maintained by one person, fully self-funded. Every new template, bug fix, and documentation update runs through AI models that cost real money — and right now those token bills come out of my own pocket.
+
+If PPT Master has been helpful to you, consider chipping in. Sponsorship directly funds more templates, faster fixes, and keeps this project free and open-source.
+
+**Individual sponsorship**
+
+<a href="https://paypal.me/hugohe3"><img src="https://img.shields.io/badge/PayPal-Sponsor-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="Sponsor via PayPal" /></a>
+
+<img src="docs/assets/alipay-qr.jpg" alt="Alipay QR Code" width="220" />
+
+Any amount is appreciated.
+
+**Custom templates**
+
+Want a template that matches your brand or industry? Two paths:
+
+- **Do it yourself** — PPT Master ships with a built-in `/create-template` workflow. Walkthrough in [FAQ — How do I create a custom template?](./docs/faq.md#q-how-do-i-create-a-custom-template); spec in [`workflows/create-template.md`](./skills/ppt-master/workflows/create-template.md).
+- **Hire me** — for complex brand systems, private deployment, or integration consulting, I take on a limited number of paid engagements each quarter. 📧 [heyug3@gmail.com](mailto:heyug3@gmail.com)
+
+---
+
+## Quick Start
+
+### 1. Prerequisites
+
+**You only need Python.** Everything else is installed via `pip install -r requirements.txt`.
+
+| Dependency | Required? | What it does |
+|------------|:---------:|--------------|
+| [Python](https://www.python.org/downloads/) 3.10+ | ✅ **Yes** | Core runtime — the only thing you actually need to install |
+
+> **TL;DR** — Install Python, run `pip install -r requirements.txt`, and you're ready to generate presentations.
+
+<details open>
+<summary><strong>Windows</strong> — see the dedicated step-by-step guide ⚠️</summary>
+
+Windows requires a few extra steps (PATH setup, execution policy, etc.). We wrote a **step-by-step guide** specifically for Windows users:
+
+**📖 [Windows Installation Guide](./docs/windows-installation.md)** — from zero to a working presentation in 10 minutes.
+
+Quick version: download Python from [python.org](https://www.python.org/downloads/) → **check "Add to PATH"** during install → `pip install -r requirements.txt` → done.
+</details>
+
+<details>
+<summary><strong>macOS / Linux</strong> — install and go</summary>
+
+```bash
+# macOS
+brew install python
+pip install -r requirements.txt
+
+# Ubuntu / Debian
+sudo apt install python3 python3-pip
+pip install -r requirements.txt
+```
+</details>
+
+<details>
+<summary><strong>Edge-case fallbacks</strong> — 99% of users don't need these</summary>
+
+Two external tools exist as fallbacks for edge cases. **Most users will never need them** — install only if you hit one of the specific scenarios below.
+
+| Fallback | Install only if… |
+|----------|-----------------|
+| [Node.js](https://nodejs.org/) 18+ | You need to import WeChat Official Account articles **and** `curl_cffi` (part of `requirements.txt`) has no prebuilt wheel for your Python + OS + CPU combination. In normal setups `web_to_md.py` handles WeChat directly through `curl_cffi`. |
+| [Pandoc](https://pandoc.org/) | You need to convert legacy formats: `.doc`, `.odt`, `.rtf`, `.tex`, `.rst`, `.org`, or `.typ`. `.docx`, `.html`, `.epub`, `.ipynb` are handled natively by Python — no pandoc required. |
+
+```bash
+# macOS (only if the above conditions apply)
+brew install node
+brew install pandoc
+
+# Ubuntu / Debian
+sudo apt install nodejs npm
+sudo apt install pandoc
+```
+</details>
+
+### 2. Pick an Agent
+
+PPT Master runs in **any tool with agent capability** — read/write files, execute commands, and sustain multi-turn conversation.
+
+| Type | Examples | Notes |
+|---|---|---|
+| **IDE-native agent** | • VS Code architecture ([VS Code](https://code.visualstudio.com/) itself, plus forks & derivatives): [Cursor](https://cursor.sh/), Trae, Codebuddy IDE, [Windsurf](https://codeium.com/windsurf), Void, etc.<br>• Other architectures: [Zed](https://zed.dev/), etc. | Editor with a built-in agent |
+| **IDE plugin / extension** | [GitHub Copilot](https://github.com/features/copilot), [Claude Code](https://claude.ai/code) (VS Code / JetBrains extension), [Cline](https://cline.bot/), [Continue](https://continue.dev/), Roo Code, etc. | Installed inside hosts like VS Code or JetBrains |
+| **CLI agent** | [Claude Code](https://claude.ai/code) CLI, [Codex CLI](https://github.com/openai/codex), [Aider](https://aider.chat/), Gemini CLI, etc. | Runs in the terminal; suits scripting, remote, or server use |
+
+> **Model recommendation**: [Claude](https://claude.ai/) Opus / Sonnet works best and is most tested. Other mainstream models (GPT, Gemini, Kimi, MiniMax, etc.) also work, but SVG absolute-coordinate layout precision varies.
+
+### 3. Set Up
+
+**Option A — Download ZIP** (no Git required): click **Code → Download ZIP** on the [GitHub page](https://github.com/hugohe3/ppt-master), then unzip.
+
+**Option B — Git clone** (requires [Git](https://git-scm.com/downloads) installed):
 
 ```bash
 git clone https://github.com/hugohe3/ppt-master.git
 cd ppt-master
+```
+
+Then install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-> 如遇权限问题，可使用 `pip install --user -r requirements.txt` 或在虚拟环境中安装。
+To update later (Option B only): `python3 skills/ppt-master/scripts/update_repo.py`
 
-### 3. 打开 AI 编辑器
+### 4. Create
 
-推荐使用以下 AI 编辑器：
-
-| 工具                                                | 推荐度 | 说明                                                                          |
-| --------------------------------------------------- | :----: | ----------------------------------------------------------------------------- |
-| **[Claude Code](https://claude.ai/)**               | ⭐⭐⭐ | **强烈推荐**！Anthropic 官方 CLI，原生 Opus 支持，上下文最充裕                |
-| [Cursor](https://cursor.sh/)                        |  ⭐⭐  | 主流 AI 编辑器，体验好但价格较高                                              |
-| [VS Code + Copilot](https://code.visualstudio.com/) |  ⭐⭐  | 微软官方方案，性价比高，但上下文窗口受限（200k，预留 35% 给输出）             |
-| [Antigravity](https://antigravity.dev/)             |   ⭐   | 免费但额度极少且不稳定，仅作备选                                              |
-
-### 4. 开始创作
-
-在 AI 编辑器中打开聊天面板，直接描述你想创作的内容：
+**Provide source materials (recommended):** Place your PDF, DOCX, images, or other files in the `projects/` directory, then tell the AI chat panel which files to use. The quickest way to get the path: right-click the file in your file manager or IDE sidebar → **Copy Path** (or **Copy Relative Path**) and paste it directly into the chat.
 
 ```
-用户：我有一份关于 Q3 季度业绩的报告，需要制作成 PPT
-
-AI：好的，先确认是否使用模板；确认后我会继续八项确认并生成设计规范。
-   [模板选项] [建议] B) 不使用模板；如需使用模板，我会先参考 templates/layouts/layouts_index.json 给出推荐
-   [Strategist] 1. 画布格式：[建议] PPT 16:9
-   [Strategist] 2. 页数范围：[建议] 8-10 页
-   ...
+You: Please create a PPT from projects/q3-report/sources/report.pdf
 ```
 
-> 💡 **模型推荐**：Opus 4.6 效果最佳，但因目前某些 IDE (如 Antigravity) 的 Opus 极不稳定，请优先使用其他稳定的 AI 客户端。
-
-> 💡 **生图能力集成**：建议配置 Google AI 的环境变量（`GEMINI_API_KEY`，如需代理可添加 `GEMINI_BASE_URL`），以便借助本项目的 `tools/nano_banana_gen.py` 在 AI 客户端中集成 nano banana 2 的强大生图能力。若使用 Antigravity 代理，调用时请注意需传入模型参数（`-m gemini-3.1-flash-image`）。
-
-> 💡 **AI 迷失上下文？** 可提示 AI 参考 `AGENTS.md` 文件，它会自动按照仓库中的角色定义工作
-
-> 💡 **AI 生成图片建议**：如需 AI 生成配图，建议在 [Gemini](https://gemini.google.com/) 中生成后选择 **Download full size** 下载，分辨率比 Antigravity 直接生成的更高。Gemini 生成的图片右下角会有星星水印，可使用 [gemini-watermark-remover](https://github.com/journey-ad/gemini-watermark-remover) 或本项目的 `tools/gemini_watermark_remover.py` 去除。
-
----
-
-## 🏗️ 系统架构
+**Paste content directly:** You can also paste text content straight into the chat window and the AI will generate a PPT from it.
 
 ```
-用户输入 (PDF/URL/Markdown)
-    ↓
-[源内容转换] → pdf_to_md.py / web_to_md.py
-    ↓
-[创建项目] → project_manager.py init <项目名> --format <格式>
-    ↓
-[模板选项] A) 使用已有模板 B) 不使用模板
-    ↓
-[需要新模板？] → 使用 /create-template 工作流单独创建
-    ↓
-[Strategist] 策略师 - 八项确认与设计规范
-    ↓
-[Image_Generator] 图片生成师（当选择 AI 生成时）
-    ↓
-[Executor] 执行师 - 分阶段生成
-    ├── 视觉构建阶段：连续生成所有 SVG 页面 → svg_output/
-    └── 逻辑构建阶段：生成完整讲稿 → notes/total.md
-    ↓
-[后处理] → total_md_split.py（拆分讲稿）→ finalize_svg.py → svg_to_pptx.py
-    ↓
-输出: 可编辑的 PPTX（自动嵌入讲稿）
-    ↓
-[Optimizer_CRAP] 优化师（可选，初版后不满意再用）
-    ↓
-如有优化：重新运行后处理与导出
+You: Please turn the following into a PPT: [paste your content here...]
 ```
 
-> 📖 详细工作流程请参阅 [工作流教程](./docs/workflow_tutorial.md) 和 [角色定义](./roles/README.md)
+Either way, the AI will first confirm the design spec:
 
-> 💡 **PPT 编辑提示**：导出的 PPTX 中每页为 SVG 格式。选中页面内容，右键选择 **"转换为形状"** (Convert to Shape) 即可自由编辑所有元素。需要 **Office 2016** 或更高版本。
+```
+AI:  Sure. Let's confirm the design spec:
+     [Template] B) Free design
+     [Format]   PPT 16:9
+     [Pages]    8-10 pages
+     ...
+```
 
----
+The AI handles everything — content analysis, visual design, SVG generation, and PPTX export.
 
-## 📚 文档导航
+> **Output:** Two timestamped files are saved to `exports/` — a native-shapes `.pptx` (directly editable) and an `_svg.pptx` snapshot for visual reference. Requires Office 2016+.
 
-| 文档 | 说明 |
-|------|------|
-| 📖 [工作流教程](./docs/workflow_tutorial.md) | 详细的工作流程和案例演示 |
-| 🎨 [设计指南](./docs/design_guidelines.md) | 配色、排版、布局规范详解 |
-| 📐 [画布格式](./docs/canvas_formats.md) | PPT、小红书、朋友圈等 10+ 种格式 |
-| 🖼️ [图片嵌入指南](./docs/svg_image_embedding.md) | SVG 图片嵌入最佳实践 |
-| 📊 [图表模板库](./templates/charts/) | 33 种标准化图表模板 · [索引说明](./templates/charts/README.md) |
-| ⚡ [快速参考](./docs/quick_reference.md) | 常用命令和参数速查 |
-| 🔧 [角色定义](./roles/README.md) | 7 个 AI 角色的完整定义 |
-| 🛠️ [工具集](./tools/README.md) | 所有工具的使用说明 |
-| 💼 [示例索引](./examples/README.md) | 15 个项目、229 页 SVG 示例 |
+> **AI lost context?** Ask it to read `skills/ppt-master/SKILL.md`.
 
----
+> **Something went wrong?** Check the **[FAQ](./docs/faq.md)** — it covers model selection, layout issues, export problems, and more. Continuously updated from real user reports.
 
-## 🛠️ 常用命令
+### 5. AI Image Generation (Optional)
 
 ```bash
-# 初始化项目
-python3 tools/project_manager.py init <项目名> --format ppt169
-
-# 将源材料归档到项目目录
-python3 tools/project_manager.py import-sources <项目路径> <源文件或URL...>
-
-# 说明：工作空间外文件默认复制；工作空间内文件会直接移动到 sources/
-
-# PDF 转 Markdown
-python3 tools/pdf_to_md.py <PDF文件>
-
-# 后处理 SVG
-python3 tools/finalize_svg.py <项目路径>
-
-# 导出 PPTX
-python3 tools/svg_to_pptx.py <项目路径> -s final
+cp .env.example .env    # then edit with your API key
 ```
 
-> 📖 完整工具说明请参阅 [工具使用指南](./tools/README.md)
-
----
-
-## 📁 项目结构
-
-```
-ppt-master/
-├── .agent/         # AI 工作流与辅助配置
-├── .github/        # CI / GitHub Actions
-├── roles/          # AI 角色定义（7 个角色，含 Template_Designer）
-├── docs/           # 文档中心（教程、设计指南、格式规范等）
-├── templates/      # 模板库（33 个图表模板 + 640+ 图标 + 布局模板）
-├── tools/          # 工具集（项目管理、转换、处理）
-├── examples/       # 示例项目（15 个完整案例）
-└── projects/       # 用户项目工作区
+```env
+IMAGE_BACKEND=gemini                        # required — must be set explicitly
+GEMINI_API_KEY=your-api-key
+GEMINI_MODEL=gemini-3.1-flash-image-preview
 ```
 
----
+Multiple backends are supported across Core / Extended / Experimental tiers. Run `python3 skills/ppt-master/scripts/image_gen.py --list-backends` to see the full list. Environment variables override `.env`. Use provider-specific keys (`GEMINI_API_KEY`, `OPENAI_API_KEY`, etc.) — global `IMAGE_API_KEY` is not supported.
 
-## ❓ 常见问题
-
-<details>
-<summary><b>Q: 生成的 PPT 可以编辑吗？</b></summary>
-
-可以。导出的 PPTX 中每页为 SVG 格式，在 PowerPoint 中选中内容，右键选择 **"转换为形状"** (Convert to Shape) 后，所有文字、图形、颜色都可以自由编辑。需要 **Office 2016** 或更高版本。
-
-</details>
-
-<details>
-<summary><b>Q: 三种执行师有什么区别？</b></summary>
-
-- **Executor_General**: 通用场景，灵活布局
-- **Executor_Consultant**: 一般咨询，数据可视化
-- **Executor_Consultant_Top**: 顶级咨询（MBB 级），5 大核心技巧
-
-</details>
-
-<details>
-<summary><b>Q: 必须使用 Optimizer_CRAP 吗？</b></summary>
-
-不是必须的。仅在需要优化关键页面视觉效果时使用。
-
-</details>
-
-> 📖 更多问题请查看 [工作流教程](./docs/workflow_tutorial.md#常见问题)
+> **Tip:** For best quality, generate images in [Gemini](https://gemini.google.com/) and select **Download full size**. Remove the watermark with `scripts/gemini_watermark_remover.py`.
 
 ---
 
-## 🤝 贡献指南
+## Documentation
 
-欢迎贡献！
-
-1. Fork 本仓库
-2. 创建分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add AmazingFeature'`)
-4. 推送分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
-
-**贡献方向**：🎨 设计模板 · 📊 图表组件 · 📝 文档完善 · 🐛 Bug 报告 · 💡 功能建议
-
----
-
-## 📄 开源协议
-
-本项目采用 [MIT License](LICENSE) 开源协议。
-
-## 🙏 致谢
-
-- [SVG Repo](https://www.svgrepo.com/) - 开源图标库
-- [Robin Williams](https://en.wikipedia.org/wiki/Robin_Williams_(author)) - CRAP 设计原则
-- 麦肯锡、波士顿咨询、贝恩 - 设计灵感来源
-
-## 📮 联系方式
-
-- **Issue**: [GitHub Issues](https://github.com/hugohe3/ppt-master/issues)
-- **GitHub**: [@hugohe3](https://github.com/hugohe3)
+| | Document | Description |
+|---|----------|-------------|
+| 🆚 | [Why PPT Master](./docs/why-ppt-master.md) | How it compares to Gamma, Copilot, and other AI tools |
+| 🪟 | [Windows Installation](./docs/windows-installation.md) | Step-by-step setup guide for Windows users |
+| 📖 | [SKILL.md](./skills/ppt-master/SKILL.md) | Core workflow and rules |
+| 🎨 | [Create a Custom Template](./skills/ppt-master/workflows/create-template.md) | Standalone workflow for building your own brand or industry template |
+| 📐 | [Canvas Formats](./skills/ppt-master/references/canvas-formats.md) | PPT 16:9, Xiaohongshu, WeChat, and 10+ formats |
+| 🛠️ | [Scripts & Tools](./skills/ppt-master/scripts/README.md) | All scripts and commands |
+| 💼 | [Examples](./examples/README.md) | 22 projects, 309 pages |
+| 🏗️ | [Technical Design](./docs/technical-design.md) | Architecture, design philosophy, why SVG |
+| ❓ | [FAQ](./docs/faq.md) | Model selection, cost, layout troubleshooting, custom templates |
 
 ---
 
-## 🌟 Star History
+## Contributing
 
-如果这个项目对你有帮助，请给一个 ⭐ Star 支持一下！
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to get involved.
+
+## License
+
+[MIT](LICENSE)
+
+## Acknowledgments
+
+[SVG Repo](https://www.svgrepo.com/) · [Tabler Icons](https://github.com/tabler/tabler-icons) · [Simple Icons](https://github.com/simple-icons/simple-icons) · [Phosphor Icons](https://github.com/phosphor-icons/core) · [Robin Williams](https://en.wikipedia.org/wiki/Robin_Williams_(author)) (CRAP principles)
+
+## Contact & Collaboration
+
+Looking to collaborate, integrate PPT Master into your workflow, or just have questions?
+
+- 💬 **Questions & sharing** — [GitHub Discussions](https://github.com/hugohe3/ppt-master/discussions)
+- 🐛 **Bug reports & feature requests** — [GitHub Issues](https://github.com/hugohe3/ppt-master/issues)
+- 🌐 **Learn more about the author** — [www.hehugo.com](https://www.hehugo.com/)
+
+> Want to build your own template? See [FAQ — custom templates](./docs/faq.md#q-how-do-i-create-a-custom-template). For paid brand / consulting work, see **[Support This Project](#support-this-project)**.
+
+---
+
+## Star History
 
 <a href="https://star-history.com/#hugohe3/ppt-master&Date">
  <picture>
@@ -274,6 +309,17 @@ ppt-master/
 
 ---
 
-Made with ❤️ by Hugo He
+## Supported by DigitalOcean
 
-[⬆ 回到顶部](#ppt-master--ai-生成可编辑的精美演示文稿支持任意文档输入)
+<p>This project is supported by:</p>
+<p>
+  <a href="https://m.do.co/c/547f129aabe1">
+    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_blue.svg" alt="Powered by DigitalOcean" width="201" />
+  </a>
+</p>
+
+---
+
+Made with ❤️ by [Hugo He](https://www.hehugo.com/) — if this project helps you, please give it a ⭐ and consider [sponsoring](#support-this-project).
+
+[⬆ Back to Top](#ppt-master--ai-generates-natively-editable-pptx-from-any-document)
