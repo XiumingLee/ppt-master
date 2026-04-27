@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <image x="0" y="0" width="1280" height="720" xlink:href="nengy_sdses_background.png" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF" fill-opacity="0.08"/>
+
+  <text x="640" y="264" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="74" font-weight="bold" fill="#F26B21" text-anchor="middle">{{CHAPTER_NUM}}</text>
+  <rect x="552" y="292" width="176" height="4" rx="2" fill="#B98945"/>
+  <text x="640" y="378" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="48" font-weight="bold" fill="#221815" text-anchor="middle">{{CHAPTER_TITLE}}</text>
+  <text x="640" y="426" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="18" fill="#6F6255" text-anchor="middle">{{CHAPTER_DESC}}</text>
+
+  <rect x="92" y="592" width="6" height="48" rx="3" fill="#F26B21"/>
+  <text x="116" y="622" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="14" fill="#8A6A42">Chapter Divider</text>
+  <line x1="246" y1="617" x2="430" y2="617" stroke="#B98945" stroke-width="2" stroke-opacity="0.42"/>
+</svg>

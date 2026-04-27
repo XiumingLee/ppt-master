@@ -1,4 +1,4 @@
-# Page Layout Template Library (21 Templates)
+# Page Layout Template Library (22 Templates)
 
 Pre-built PPT page layout templates supporting multiple styles and use cases.
 
@@ -17,6 +17,7 @@ Pre-built PPT page layout templates supporting multiple styles and use cases.
 | `mckinsey` | Brand | Strategic consulting, executive reports, investment analysis | McKinsey Blue `#005587` | Structured thinking, minimalist premium, MECE principle |
 | `anthropic` | Brand | AI tech sharing, developer conferences, product launches | Anthropic Orange `#D97757` | Tech-forward, conclusion-first, dark cover |
 | `china_telecom_template` | Brand | Telecom solutions, digital transformation plans,政企汇报 | Telecom Red `#C00000` | Restrained, authoritative, telecom enterprise style |
+| `神思能源` | Brand | Energy service proposals, address governance reports, enterprise digitalization briefings | Energy Orange `#F26B21` + Warm Gold `#B98945` | Clean, restrained, light enterprise energy style |
 | `中汽研_常规` | Brand | Product certification, evaluation & testing | Deep Blue `#004098` | [Standard] Professional authority, consulting style |
 | `中汽研_商务` | Brand | Business visits, technical exchanges | Blue Gradient `#003366` | [Business] Modern tech, composed and sophisticated |
 | `中汽研_现代` | Brand | Strategic launches, future tech | Deep Blue `#001529` | [Future] Future Tech, neon glow |
@@ -49,6 +50,7 @@ Templates mimicking **specific well-known brands/institutions** with their exclu
 | `mckinsey` | McKinsey consulting style, data-driven and structured |
 | `anthropic` | Anthropic AI style, dark tech-forward aesthetic |
 | `china_telecom_template` | China Telecom brand style, red-gray structural header + ribbon footer |
+| `神思能源` | Jinan Energy Group / Synthesis brand style, light map background with warm energy accents |
 | `中汽研_常规` | CATARC standard style (v1), suitable for certification and evaluation |
 | `中汽研_商务` | CATARC business style (v2), modern tech business, composed and sophisticated |
 | `中汽研_现代` | CATARC modern style (v3 Future), Future Tech style, deep blue + neon cyan |

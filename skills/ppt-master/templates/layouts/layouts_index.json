@@ -19,6 +19,11 @@
     "summary": "A China Telecom style template for telecom solution proposals, digital transformation plans, and government-enterprise briefings",
     "keywords": ["China Telecom", "Telecom", "Digital transformation", "Government-enterprise", "Briefing"]
   },
+  "神思能源": {
+    "label": "神思能源模板",
+    "summary": "A Jinan Energy Group / Synthesis style template for energy service proposals, address governance reports, and enterprise digitalization briefings",
+    "keywords": ["Jinan Energy Group", "Synthesis", "Energy", "Address governance", "Digital briefing"]
+  },
   "exhibit": {
     "label": "Exhibit Style Template",
     "summary": "Conclusion-first layout with Exhibit takeaway bars for data-driven strategic reports and executive presentations",

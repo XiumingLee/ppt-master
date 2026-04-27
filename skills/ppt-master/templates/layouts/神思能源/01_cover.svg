@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="energyLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F26B21"/>
+      <stop offset="0.55" stop-color="#F7B733"/>
+      <stop offset="1" stop-color="#58B947"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <image x="0" y="0" width="1280" height="720" xlink:href="nengy_sdses_background.png" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF" fill-opacity="0.06"/>
+
+  <rect x="256" y="214" width="768" height="2" fill="url(#energyLine)"/>
+  <text x="640" y="306" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="50" font-weight="bold" fill="#221815" text-anchor="middle">{{TITLE}}</text>
+  <text x="640" y="362" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="24" fill="#6F6255" text-anchor="middle">{{SUBTITLE}}</text>
+  <rect x="540" y="396" width="200" height="4" rx="2" fill="#F26B21"/>
+  <text x="640" y="458" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="18" fill="#8A6A42" text-anchor="middle">{{AUTHOR}}</text>
+  <text x="640" y="492" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="16" fill="#9B8E80" text-anchor="middle">{{DATE}}</text>
+
+  <circle cx="166" cy="612" r="5" fill="#F26B21"/>
+  <line x1="184" y1="612" x2="384" y2="612" stroke="#B98945" stroke-width="2" stroke-opacity="0.5"/>
+  <text x="398" y="617" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="12" fill="#9B8E80">Energy data governance presentation template</text>
+</svg>

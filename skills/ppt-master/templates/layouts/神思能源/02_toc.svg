@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="tocAccent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F26B21"/>
+      <stop offset="1" stop-color="#B98945"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <image x="0" y="0" width="1280" height="720" xlink:href="nengy_sdses_background.png" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF" fill-opacity="0.12"/>
+
+  <rect x="318" y="286" width="210" height="112" rx="6" fill="#FFFFFF" fill-opacity="0.72"/>
+  <text x="423" y="360" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="46" font-weight="bold" fill="#221815" text-anchor="middle">目录</text>
+  <line x1="423" y1="382" x2="423" y2="426" stroke="#F26B21" stroke-width="4" stroke-linecap="round"/>
+
+  <line x1="820" y1="118" x2="820" y2="626" stroke="#B98945" stroke-width="2" stroke-opacity="0.32"/>
+
+  <circle cx="820" cy="126" r="23" fill="#F26B21"/>
+  <text x="820" y="137" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">01</text>
+  <text x="878" y="126" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="24" font-weight="bold" fill="#221815">{{TOC_ITEM_1_TITLE}}</text>
+  <text x="878" y="154" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="13" fill="#8A6A42">{{TOC_ITEM_1_DESC}}</text>
+
+  <circle cx="820" cy="224" r="23" fill="#F26B21" fill-opacity="0.9"/>
+  <text x="820" y="235" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">02</text>
+  <text x="878" y="224" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="24" font-weight="bold" fill="#221815">{{TOC_ITEM_2_TITLE}}</text>
+  <text x="878" y="252" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="13" fill="#8A6A42">{{TOC_ITEM_2_DESC}}</text>
+
+  <circle cx="820" cy="322" r="23" fill="#F26B21" fill-opacity="0.82"/>
+  <text x="820" y="333" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">03</text>
+  <text x="878" y="322" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="24" font-weight="bold" fill="#221815">{{TOC_ITEM_3_TITLE}}</text>
+  <text x="878" y="350" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="13" fill="#8A6A42">{{TOC_ITEM_3_DESC}}</text>
+
+  <circle cx="820" cy="420" r="23" fill="#B98945"/>
+  <text x="820" y="431" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">04</text>
+  <text x="878" y="420" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="24" font-weight="bold" fill="#221815">{{TOC_ITEM_4_TITLE}}</text>
+  <text x="878" y="448" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="13" fill="#8A6A42">{{TOC_ITEM_4_DESC}}</text>
+
+  <circle cx="820" cy="518" r="23" fill="#B98945" fill-opacity="0.9"/>
+  <text x="820" y="529" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">05</text>
+  <text x="878" y="518" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="24" font-weight="bold" fill="#221815">{{TOC_ITEM_5_TITLE}}</text>
+  <text x="878" y="546" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="13" fill="#8A6A42">{{TOC_ITEM_5_DESC}}</text>
+
+  <circle cx="820" cy="616" r="23" fill="#58B947"/>
+  <text x="820" y="627" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">06</text>
+  <text x="878" y="616" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="24" font-weight="bold" fill="#221815">{{TOC_ITEM_6_TITLE}}</text>
+  <text x="878" y="644" font-family="Microsoft YaHei, SimHei, Arial, sans-serif" font-size="13" fill="#8A6A42">{{TOC_ITEM_6_DESC}}</text>
+</svg>
