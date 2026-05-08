@@ -158,7 +158,8 @@ class ProjectManager:
                 "- `notes/`: speaker notes\n"
                 "- `templates/`: project templates\n"
                 "- `sources/`: source materials and normalized markdown\n"
-                "- `exports/`: generated PPTX files (timestamped history)\n"
+                "- `exports/`: main native pptx (timestamped)\n"
+                "- `backup/<timestamp>/`: SVG snapshot pptx + svg_output/ archive (auto-created on export; safe to delete old timestamps)\n"
             ),
             encoding="utf-8",
         )
@@ -675,6 +676,10 @@ def main() -> None:
         sys.exit(1)
 
     command = sys.argv[1]
+    if command in {"-h", "--help", "help"}:
+        print_usage()
+        sys.exit(0)
+
     manager = ProjectManager()
 
     try:
