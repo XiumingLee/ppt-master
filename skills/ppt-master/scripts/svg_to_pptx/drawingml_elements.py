@@ -67,6 +67,30 @@ def _wrap_shape(
 _BEZIER_QUARTER_K = 0.5522847498
 
 
+def _build_preset_geom_from_meta(elem: ET.Element) -> str | None:
+    """Build native DrawingML preset geometry from SVG metadata."""
+    prst = elem.get('data-pptx-prst')
+    if prst != 'round2SameRect':
+        return None
+
+    def _adj_attr(name: str, default: int) -> int:
+        try:
+            return int(float(elem.get(name, str(default))))
+        except ValueError:
+            return default
+
+    adj1 = max(0, min(100000, _adj_attr('data-pptx-adj1', 16667)))
+    adj2 = max(0, min(100000, _adj_attr('data-pptx-adj2', 0)))
+    return (
+        '<a:prstGeom prst="round2SameRect">'
+        '<a:avLst>'
+        f'<a:gd name="adj1" fmla="val {adj1}"/>'
+        f'<a:gd name="adj2" fmla="val {adj2}"/>'
+        '</a:avLst>'
+        '</a:prstGeom>'
+    )
+
+
 def _build_round_rect_custgeom(w: float, h: float, rx: float, ry: float) -> str:
     """Build a DrawingML ``custGeom`` for a rectangle with elliptical corners.
 
@@ -617,7 +641,9 @@ def convert_path(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
     w_emu = px_to_emu(width)
     h_emu = px_to_emu(height)
 
-    geom = f'''<a:custGeom>
+    geom = _build_preset_geom_from_meta(elem)
+    if geom is None:
+        geom = f'''<a:custGeom>
 <a:avLst/><a:gdLst/><a:ahLst/><a:cxnLst/>
 <a:rect l="l" t="t" r="r" b="b"/>
 <a:pathLst><a:path w="{w_emu}" h="{h_emu}">
@@ -811,6 +837,15 @@ def _override_run_attrs(
         c = parse_hex_color(child_fill)
         if c:
             run_attrs['fill'] = c
+    if tspan.get('stroke'):
+        run_attrs['stroke_raw'] = tspan.get('stroke')
+    if tspan.get('stroke-width'):
+        run_attrs['stroke_width'] = _f(tspan.get('stroke-width'), run_attrs.get('stroke_width', 1.0))
+    if tspan.get('stroke-opacity'):
+        try:
+            run_attrs['stroke_opacity'] = float(tspan.get('stroke-opacity', '1'))
+        except ValueError:
+            pass
     if tspan.get('font-size'):
         run_attrs['font_size'] = _f(tspan.get('font-size'), run_attrs['font_size'])
     if tspan.get('font-family'):
@@ -889,6 +924,49 @@ def _build_text_runs(
     return runs
 
 
+def _build_text_fill_xml(
+    fill: str,
+    fill_raw: str,
+    opacity: float | None,
+    ctx: ConvertContext | None,
+) -> str:
+    """Build DrawingML fill XML for a text run."""
+    if fill_raw == 'none':
+        return '<a:noFill/>'
+
+    grad_id = resolve_url_id(fill_raw)
+    if grad_id and ctx and grad_id in ctx.defs:
+        return build_gradient_fill(ctx.defs[grad_id], opacity)
+
+    alpha_xml = ''
+    if opacity is not None and opacity < 1.0:
+        alpha_xml = f'<a:alphaMod val="{int(opacity * 100000)}"/>'
+    return f'<a:solidFill><a:srgbClr val="{fill}">{alpha_xml}</a:srgbClr></a:solidFill>'
+
+
+def _build_text_outline_xml(run: dict[str, Any]) -> str:
+    """Build DrawingML outline XML for a text run from SVG stroke attributes."""
+    stroke_raw = run.get('stroke_raw')
+    if not stroke_raw or stroke_raw == 'none':
+        return ''
+
+    color = parse_hex_color(stroke_raw)
+    if not color:
+        return ''
+
+    stroke_width = _f(str(run.get('stroke_width', 1.0)), 1.0)
+    stroke_opacity = run.get('stroke_opacity')
+    alpha_xml = ''
+    if stroke_opacity is not None and stroke_opacity < 1.0:
+        alpha_xml = f'<a:alphaMod val="{int(stroke_opacity * 100000)}"/>'
+
+    return (
+        f'<a:ln w="{px_to_emu(stroke_width)}">'
+        f'<a:solidFill><a:srgbClr val="{color}">{alpha_xml}</a:srgbClr></a:solidFill>'
+        '</a:ln>'
+    )
+
+
 def _build_run_xml(
     run: dict[str, Any],
     default_fonts: dict[str, str],
@@ -915,20 +993,14 @@ def _build_run_xml(
 
     fonts = parse_font_family(ff) if ff else default_fonts
 
-    # Build fill XML - gradient or solid
-    grad_id = resolve_url_id(fill_raw)
-    if grad_id and ctx and grad_id in ctx.defs:
-        fill_xml = build_gradient_fill(ctx.defs[grad_id], opacity)
-    else:
-        alpha_xml = ''
-        if opacity is not None and opacity < 1.0:
-            alpha_xml = f'<a:alpha val="{int(opacity * 100000)}"/>'
-        fill_xml = f'<a:solidFill><a:srgbClr val="{fill}">{alpha_xml}</a:srgbClr></a:solidFill>'
+    fill_xml = _build_text_fill_xml(fill, fill_raw, opacity, ctx)
+    outline_xml = _build_text_outline_xml(run)
 
     space_attr = ' xml:space="preserve"' if text != text.strip() or '  ' in text else ''
 
     return f'''<a:r>
 <a:rPr lang="zh-CN" sz="{sz}"{b_attr}{i_attr}{u_attr}{strike_attr} dirty="0">
+{outline_xml}
 {fill_xml}
 {effect_xml}
 <a:latin typeface="{_xml_escape(fonts['latin'])}"/>
@@ -950,6 +1022,9 @@ def convert_text(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
     fill_raw = _get_attr(elem, 'fill', ctx) or '#000000'
     fill_color = parse_hex_color(fill_raw) or '000000'
     opacity = get_fill_opacity(elem, ctx)
+    stroke_raw = _get_attr(elem, 'stroke', ctx) or ''
+    stroke_width = _f(_get_attr(elem, 'stroke-width', ctx), 1.0)
+    stroke_opacity = get_stroke_opacity(elem, ctx)
     font_style = _get_attr(elem, 'font-style', ctx) or ''
     text_decoration = _get_attr(elem, 'text-decoration', ctx) or ''
 
@@ -964,6 +1039,9 @@ def convert_text(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
         'font_style': font_style,
         'text_decoration': text_decoration,
         'opacity': opacity,
+        'stroke_raw': stroke_raw,
+        'stroke_width': stroke_width,
+        'stroke_opacity': stroke_opacity,
     }
     runs = _build_text_runs(elem, parent_attrs)
 
@@ -1258,18 +1336,20 @@ def _picture_xfrm_from_rect(
     w: float,
     h: float,
 ) -> tuple[str, int, int, int, int, tuple[int, int, int, int]]:
-    """Build DrawingML xfrm data for a picture rectangle."""
+    """Build DrawingML xfrm data for a picture rectangle.
+
+    Coordinates ``x``, ``y``, ``w``, ``h`` MUST already be in ctx-resolved
+    space (i.e. callers have applied ``ctx_x`` / ``ctx_w`` upstream). When
+    ``ctx.use_transform_matrix`` is set, raw SVG-space coordinates are
+    expected and the matrix path applies the transform itself.
+    """
     if ctx.use_transform_matrix:
         return rect_to_dml_xfrm(x, y, w, h, ctx.transform_matrix)
 
-    x_t = ctx_x(x, ctx)
-    y_t = ctx_y(y, ctx)
-    w_t = ctx_w(w, ctx)
-    h_t = ctx_h(h, ctx)
-    off_x = px_to_emu(x_t)
-    off_y = px_to_emu(y_t)
-    ext_cx = px_to_emu(w_t)
-    ext_cy = px_to_emu(h_t)
+    off_x = px_to_emu(x)
+    off_y = px_to_emu(y)
+    ext_cx = px_to_emu(w)
+    ext_cy = px_to_emu(h)
     return '', off_x, off_y, ext_cx, ext_cy, (off_x, off_y, off_x + ext_cx, off_y + ext_cy)
 
 
@@ -1511,10 +1591,12 @@ def convert_image(elem: ET.Element, ctx: ConvertContext) -> ShapeResult | None:
 
     # Resolve preserveAspectRatio="<align> meet" by shrinking the picture
     # frame to match the image's aspect ratio. Skipped when a real clip-path
-    # is in effect: clip geometry is computed against the original-box
-    # coordinate space and would no longer line up after a frame shift.
-    has_clip = bool(elem.get('clip-path')) and elem.get('clip-path') != 'none'
-    meet_fit = None if has_clip else _resolve_image_meet_fit(elem, img_data, w, h)
+    # produces non-trivial geometry: such clip rectangles are defined against
+    # the original box and would no longer line up after a frame shift.
+    # A clip-path that resolves back to the default rect geometry (e.g. plain
+    # <rect> without rx/ry) is a no-op and must not block meet adjustment.
+    clip_is_noop = clip_geom == '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
+    meet_fit = None if not clip_is_noop else _resolve_image_meet_fit(elem, img_data, w, h)
 
     shape_id = ctx.next_id()
     if meet_fit is not None:

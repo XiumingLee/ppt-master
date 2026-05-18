@@ -20,8 +20,12 @@
 - text: #......
 - text_secondary: #......
 - border: #......
+- image_rendering: vector-illustration
+- image_palette: cool-corporate
 
 > Strategist: fill only colors actually used. Add extra rows as needed; delete unused rows rather than leave as `#......`.
+>
+> **`image_rendering` and `image_palette`** — required only when `images` section below contains `ai`-sourced files. Values MUST be valid names from `references/image-renderings/_index.md` and `references/image-palettes/_index.md`. Image_Generator reads these and applies them deck-wide. Omit both rows when the deck has no AI-generated images.
 
 ## typography
 - font_family: "Microsoft YaHei", Arial, sans-serif
@@ -110,7 +114,7 @@
 ## page_charts
 - P05: bar_chart
 - P09: timeline_horizontal
-- P12: bcg_matrix
+- P12: quadrant_bubble_scatter
 
 > One entry per page **that adapts a `templates/charts/` chart template**. Key: `P<NN>` matching §IX. Value: chart template basename without `.svg` (must match a key in `templates/charts/charts_index.json`).
 >

@@ -1,6 +1,6 @@
 # PPT Master — AI 生成原生可编辑 PPTX，支持任意文档输入
 
-[![Version](https://img.shields.io/badge/version-v2.6.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)
+[![Version](https://img.shields.io/badge/version-v2.7.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/hugohe3/ppt-master.svg)](https://github.com/hugohe3/ppt-master/stargazers)
 [![AtomGit stars](https://atomgit.com/hugohe3/ppt-master/star/badge.svg)](https://atomgit.com/hugohe3/ppt-master)
@@ -34,9 +34,17 @@
   <sub>↑ <a href="https://hugohe3.github.io/ppt-master/viewer.html?project=ppt169_liziqi_plant_dye_colors">一份 12 页的原生可编辑 PPT</a>，端到端由 <a href="https://mp.weixin.qq.com/s/6ZmBl0uE3sOtD8TJcHfNAw">一个微信公众号链接</a> 通过 Claude Opus 4.7 生成。无需人工设计，不走图片导出——每一个形状、文本框、图表都可以在 PowerPoint 里直接点击编辑。</sub>
 </p>
 
+<p align="center">
+  更多端到端实例：<a href="https://space.bilibili.com/111258938/lists/8144072"><strong>合集·PPT-Master 能力展示</strong></a>（B 站）
+</p>
+
 ---
 
 丢进一份 PDF、DOCX、网址或 Markdown，拿回一份**原生可编辑的 PowerPoint**——真正的形状、真正的文本框、真正的图表，不是图片。点击任何元素即可编辑。
+
+> **⚠️ PPT Master 是 harness，不是完整的 agent。** `harness + model = agent`——工具负责工作流，模型决定上限。要组成真正高质量的 agent，推荐组合是：**Claude 大上下文窗口（~100 万 token）+ AI 生图（`gpt-image-2`）**。其他模型能跑流程，但达不到同等质量上限。效果不理想，请先换模型，不要质疑 harness。
+
+> **实时预览与可视化修改** —— 生成过程中会自动打开浏览器预览 `http://localhost:5050`。点选任意元素，写一句要改成什么，点 **Submit annotations**，回到对话说一句"应用注解"（或 "apply my annotations"），AI 就会改写 SVG 并重新导出 PPTX。最初我只想做纯对话驱动，但很多用户希望能可视化看到效果再改，所以把这条路径融进了主流程。这部分能力建立在 [@WodenJay](https://github.com/WodenJay) 的 [PR #85](https://github.com/hugohe3/ppt-master/pull/85) 之上，特别致谢。详见 [实时预览工作流 →](./skills/ppt-master/workflows/live-preview.md)。
 
 > **模板复刻** —— 把任何一份你喜欢的 `.pptx` 丢给 AI，一句"用 `/create-template` 复刻成模板"，就能拿到一套可被 PPT Master 直接调用的页面布局——主题色、字体、母版/版式结构、复用图片、甚至精灵图裁剪关系都按 OOXML 真实抽取，封面/章节/装饰繁复的页面都能稳定还原。从此你不再受限于内置模板：公司品牌 deck、客户中标模板、找的高质量参考稿，都能一键变成你的私人模板库。详见 [模板指南 →](./docs/zh/templates-guide.md)。
 
@@ -134,20 +142,13 @@ pip install -r requirements.txt
 <details>
 <summary><strong>边缘场景备用方案</strong> — 99% 的用户用不到</summary>
 
-下面两个外部程序只作为极端场景的兜底。**绝大多数用户根本不需要装**，只有遇到以下具体场景才装：
-
-| 备用方案 | 只在以下情况才装 |
-|---------|-----------------|
-| [Node.js](https://nodejs.org/) 18+ | 你需要抓取微信公众号文章，**且**你的 Python + 系统 + CPU 组合下 `curl_cffi`（`requirements.txt` 里已默认安装）没有预编译 wheel。正常安装下 `web_to_md.py` 已能通过 `curl_cffi` 直接抓微信。 |
-| [Pandoc](https://pandoc.org/) | 你需要转 `.doc`、`.odt`、`.rtf`、`.tex`、`.rst`、`.org`、`.typ` 这些小众格式。`.docx`、`.html`、`.epub`、`.ipynb` 已由 Python 原生处理，不需要 pandoc。 |
+**Pandoc** — 只在需要转小众格式时才装：`.doc`、`.odt`、`.rtf`、`.tex`、`.rst`、`.org`、`.typ`。`.docx`、`.html`、`.epub`、`.ipynb` 已由 Python 原生处理，不需要 pandoc。
 
 ```bash
-# macOS（仅在上述条件成立时才装）
-brew install node
+# macOS
 brew install pandoc
 
 # Ubuntu / Debian
-sudo apt install nodejs npm
 sudo apt install pandoc
 ```
 </details>
@@ -162,9 +163,9 @@ PPT Master 在**任何具备 agent 能力**（可读写文件、执行命令、�
 | **IDE 插件 / 扩展** | [GitHub Copilot](https://github.com/features/copilot)、[Claude Code](https://claude.ai/code)（VS Code / JetBrains 扩展）、[Cline](https://cline.bot/)、[Continue](https://continue.dev/)、Roo Code、通义灵码、CodeGeeX 等 | 装在 VS Code / JetBrains 等宿主里使用 |
 | **CLI agent** | [Claude Code](https://claude.ai/code) CLI、[Codex CLI](https://github.com/openai/codex)、[Aider](https://aider.chat/)、Gemini CLI 等 | 终端里运行，适合脚本化 / 远程 / 服务器场景 |
 
-> **模型推荐**：[Claude](https://claude.ai/) Opus / Sonnet 效果最好且测试最充分。其他主流模型（GPT、Gemini、Kimi、MiniMax 等）也能驱动，但 SVG 绝对坐标布局精度会有差异。
->
-**🔑 想用 Claude / GPT / Gemini 但还没有渠道？** 本项目赞助商 **[PackyCode](https://www.packyapi.com/register?aff=ppt-master)** 可以解决大多数卡点——没有 API Key、无法直连、没有境外信用卡无法订阅、或者只是不想为偶尔使用付整月费，PackyCode 都能让你按量调用 Claude、GPT、Gemini 等主流模型，支持国内支付，开箱即用。充值时填写优惠码 **`ppt-master`** 享 9 折。
+> **模型推荐**：优先选 **Claude Opus / Sonnet**，搭配大上下文窗口和 `gpt-image-2` 生图——原因见上方说明。
+
+**🔑 想用 Claude / GPT / Gemini 但还没有渠道？** 本项目赞助商 **[PackyCode](https://www.packyapi.com/register?aff=ppt-master)** 可以解决大多数卡点——没有 API Key、无法直连、没有境外信用卡无法订阅、或者只是不想为偶尔使用付整月费，PackyCode 都能让你按量调用 Claude、GPT、Gemini 等主流模型，**直接用上推荐的 Claude 模型**，支持国内支付，开箱即用。充值时填写优惠码 **`ppt-master`** 享 9 折。
 
 ### 3. 配置项目
 

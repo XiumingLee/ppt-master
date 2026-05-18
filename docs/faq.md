@@ -78,6 +78,8 @@ python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation fade     
 python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger on-click   # presenter-paced reveals
 ```
 
+`on-click` is for live presentations. Narrated/video export via `--recorded-narration` rejects it because PPT Master writes page timings, not object-level click timings; use `after-previous` or `with-previous` for narrated decks.
+
 Full effect list, anchor logic (top-level `<g id="...">`), fallback behavior, and limitations: see [Animations & Transitions](../skills/ppt-master/references/animations.md).
 
 ## Q: Which AI model works best?
@@ -87,6 +89,19 @@ Full effect list, anchor logic (top-level `<g id="...">`), fallback behavior, an
 **GPT series** older versions tended to produce more layout issues — text overflowing containers, misaligned elements, coordinate miscalculations. Newer versions (e.g. GPT-5.5) have improved noticeably and are usable in practice; if issues appear, tell the AI which page to fix.
 
 Other models (Gemini, GLM, MiniMax, etc.) vary in quality. In general, models with stronger frontend/visual capabilities produce better results.
+
+## Q: Someone said PPT Master is "just a toy" — is that fair?
+
+No. PPT Master is a **harness**, not a complete agent — `harness + model = agent`, and the output ceiling is set entirely by the model, not the harness. Evaluating PPT Master with a weak or small-context model is like test-driving a sports car in first gear and concluding it's slow.
+
+**The full-power combination:**
+
+- **Claude with a large context window** (ideally ~1M tokens): a large context window lets the Executor see every previously generated page in the same session, maintaining visual consistency across the entire deck without splitting runs. Smaller windows force split-mode execution, which introduces visible style drift between phases.
+- **AI image generation with `gpt-image-2`** (or similar): placeholder-grade stock images are the single biggest reason decks look generic. Replacing them with on-brand AI-generated illustrations changes the perceived quality immediately.
+
+If the results you've seen look mediocre, check your setup before concluding anything about the tool: What model? What context size? Was image generation enabled? PPT Master + Claude Opus at 1M context + `gpt-image-2` images is a genuinely different experience from PPT Master + a small open-source model with no image API configured.
+
+> **No Claude access?** Project sponsor [PackyCode](https://www.packyapi.com/register?aff=ppt-master) provides pay-as-you-go access to Claude and other models — no subscription, no overseas card required. Use promo code **`ppt-master`** for 10% off.
 
 ## Q: Text overflows or elements are misaligned — what can I do?
 
